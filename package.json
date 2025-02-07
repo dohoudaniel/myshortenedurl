@@ -1,0 +1,28 @@
+{
+  "name": "url_shortener",
+  "version": "1.0.0",
+  "description": "A URL shortener built by Daniel Favour Dohou for the Future Interns internship program.",
+  "homepage": "https://github.com/dohoudaniel/FUTURE_FS_03#readme",
+  "bugs": {
+    "url": "https://github.com/dohoudaniel/FUTURE_FS_03/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dohoudaniel/FUTURE_FS_03.git"
+  },
+  "license": "MIT",
+  "author": "Daniel Dohou",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "devStart": "nodemon server.js"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "mongoose": "^8.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
