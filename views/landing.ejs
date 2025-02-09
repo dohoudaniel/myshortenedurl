@@ -1,64 +1,25 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DDF Shrinked URL - Welcome</title>
-  <link rel="icon" type="image/png" href="/logo.png">
-  <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-  <!-- Warn if JavaScript is disabled
-  <noscript>
-    <div style="color: red; text-align: center; padding: 1rem; background: #ffcdd2;">
-      You must enable JavaScript to be able to use the website.
-    </div>
-  </noscript>
-  <header>
-    <h1>Welcome to DDF Shrinked URL</h1>
-  </header>
-  <main>
-    <p>Your one-stop solution to shorten URLs and track clicks.</p>
-    <div>
-      <a href="/login" class="btn">Login</a>
-      <a href="/signup" class="btn">Sign Up</a>
-    </div>
-  </main>
-</body>
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DDF Shrinked URL - Welcome</title>
-  <link rel="icon" type="image/png" href="/logo.png">
-  <link rel="stylesheet" href="/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <noscript>
+        <style>body { display: none; }</style>
+        <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: white; z-index: 9999; padding: 2rem; text-align: center;">
+            <h2>JavaScript is required to use this website. Please enable it to continue.</h2>
+        </div>
+    </noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <style>
+        /* Add your landing page styles here */
+    </style>
 </head>
 <body>
-  <!-- Warn if JavaScript is disabled -->
-  <noscript>
-    <div style="color: red; text-align: center; padding: 1rem; background: #ffcdd2;">
-      You must enable JavaScript to be able to use the website.
+    <div class="container">
+        <h1>Welcome to URL Shortener</h1>
+        <a href="/signup">Sign Up</a>
+        <a href="/login">Login</a>
     </div>
-  </noscript>
-  <header>
-    <h1>Welcome to DDF Shrinked URL</h1>
-  </header>
-  <main>
-    <p>Your one-stop solution to shorten URLs and track clicks.</p>
-    <div>
-      <a href="/login" class="btn">Login</a>
-      <a href="/signup" class="btn">Sign Up</a>
-    </div>
-  </main>
-  <script>
-    if (!document.cookie.includes('js_enabled=true')) {
-      document.cookie = "js_enabled=true; path=/";
-      // Optionally, force a reload so that subsequent requests include the cookie:
-      location.reload();
-    }
-  </script>
 </body>
 </html>
