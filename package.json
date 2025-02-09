@@ -18,9 +18,12 @@
     "devStart": "nodemon server.js"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.7",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
+    "express-session": "^1.18.1",
     "mongoose": "^8.10.0",
     "shortid": "^2.2.17"
   },

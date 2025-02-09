@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -332,5 +332,136 @@
             }
         });
     </script>
+</body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home - DDF Shrinked URL</title>
+  <link rel="icon" type="image/png" href="/logo.png">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <!-- Warn if JavaScript is disabled
+  <noscript>
+    <div style="color: red; text-align: center; padding: 1rem; background: #ffcdd2;">
+      You must enable JavaScript to be able to use the website.
+    </div>
+  </noscript>
+  <header>
+    <h1>Your Dashboard</h1>
+    <a href="/logout" class="btn">Logout</a>
+  </header>
+  <main>
+    <section>
+      <h2>Shorten a New URL</h2>
+      <form action="/shortUrls" method="POST">
+        <label for="fullUrl">Enter URL:</label>
+        <input type="url" name="fullUrl" id="fullUrl" required placeholder="https://example.com">
+        <button type="submit">Shorten</button>
+      </form>
+    </section>
+    <section>
+      <h2>Your Shortened URLs</h2>
+      <% if (shortUrls.length > 0) { %>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Original URL</th>
+            <th>Shortened URL</th>
+            <th>Clicks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% shortUrls.forEach(function(url){ %>
+            <tr>
+              <td><a href="<%= url.full %>" target="_blank"><%= url.full %></a></td>
+              <td>
+                <a href="/short/<%= url.short %>" target="_blank">
+                  https://ddfshrinkedurl/<%= url.short %>
+                </a>
+              </td>
+              <td><%= url.clicks %></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+      <% } else { %>
+      <p>No URLs shortened yet.</p>
+      <% } %>
+    </section>
+  </main>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home - DDF Shrinked URL</title>
+  <link rel="icon" type="image/png" href="/logo.png">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <!-- Warn if JavaScript is disabled -->
+  <noscript>
+    <div style="color: red; text-align: center; padding: 1rem; background: #ffcdd2;">
+      You must enable JavaScript to be able to use the website.
+    </div>
+  </noscript>
+  <header>
+    <h1>Your Dashboard</h1>
+    <a href="/logout" class="btn">Logout</a>
+  </header>
+  <main>
+    <section>
+      <h2>Shorten a New URL</h2>
+      <form action="/shortUrls" method="POST">
+        <label for="fullUrl">Enter URL:</label>
+        <input type="url" name="fullUrl" id="fullUrl" required placeholder="https://example.com">
+        <button type="submit">Shorten</button>
+      </form>
+    </section>
+    <section>
+      <h2>Your Shortened URLs</h2>
+      <% if (shortUrls.length > 0) { %>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Original URL</th>
+            <th>Shortened URL</th>
+            <th>Clicks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% shortUrls.forEach(function(url){ %>
+            <tr>
+              <td><a href="<%= url.full %>" target="_blank"><%= url.full %></a></td>
+              <td>
+                <a href="/short/<%= url.short %>" target="_blank">
+                  https://ddfshrinkedurl/<%= url.short %>
+                </a>
+              </td>
+              <td><%= url.clicks %></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+      <% } else { %>
+      <p>No URLs shortened yet.</p>
+      <% } %>
+    </section>
+  </main>
+  <script>
+    if (!document.cookie.includes('js_enabled=true')) {
+      document.cookie = "js_enabled=true; path=/";
+      // Optionally, force a reload so that subsequent requests include the cookie:
+      location.reload();
+    }
+  </script>
 </body>
 </html>
