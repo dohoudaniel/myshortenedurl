@@ -1,64 +1,252 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DDF Shrinked URL - Welcome</title>
-  <link rel="icon" type="image/png" href="/logo.png">
-  <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-  <!-- Warn if JavaScript is disabled
-  <noscript>
-    <div style="color: red; text-align: center; padding: 1rem; background: #ffcdd2;">
-      You must enable JavaScript to be able to use the website.
-    </div>
-  </noscript>
-  <header>
-    <h1>Welcome to DDF Shrinked URL</h1>
-  </header>
-  <main>
-    <p>Your one-stop solution to shorten URLs and track clicks.</p>
-    <div>
-      <a href="/login" class="btn">Login</a>
-      <a href="/signup" class="btn">Sign Up</a>
-    </div>
-  </main>
-</body>
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DDF Shrinked URL - Welcome</title>
-  <link rel="icon" type="image/png" href="/logo.png">
-  <link rel="stylesheet" href="/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DDF URL Shortener - Make Long Links Short</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <noscript>
+        <style>
+            .js-required {
+                display: flex !important;
+            }
+            .js-content {
+                display: none !important;
+            }
+        </style>
+    </noscript>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --background: #ffffff;
+            --foreground: #0f172a;
+            --muted: #64748b;
+            --muted-foreground: #94a3b8;
+            --card: #ffffff;
+            --card-foreground: #0f172a;
+            --border: #e2e8f0;
+            --input: #e2e8f0;
+            --ring: #3b82f6;
+        }
+
+        [data-theme="dark"] {
+            --primary: #60a5fa;
+            --primary-hover: #3b82f6;
+            --background: #0f172a;
+            --foreground: #f8fafc;
+            --muted: #94a3b8;
+            --muted-foreground: #cbd5e1;
+            --card: #1e293b;
+            --card-foreground: #f8fafc;
+            --border: #334155;
+            --input: #334155;
+            --ring: #60a5fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--foreground);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .js-required {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--background);
+            color: var(--foreground);
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            z-index: 50;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--foreground);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s;
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--input);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--muted);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .button-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .button-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .button-secondary {
+            background-color: var(--card);
+            color: var(--card-foreground);
+            border: 1px solid var(--border);
+        }
+
+        .button-secondary:hover {
+            background-color: var(--input);
+            transform: translateY(-1px);
+        }
+
+        .features {
+            padding: 4rem 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background-color: var(--card);
+            padding: 2rem;
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--card-foreground);
+        }
+
+        .feature-card p {
+            color: var(--muted);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .button {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-  <!-- Warn if JavaScript is disabled -->
-  <noscript>
-    <div style="color: red; text-align: center; padding: 1rem; background: #ffcdd2;">
-      You must enable JavaScript to be able to use the website.
+    <div class="js-required">
+        <div>
+            <h2 style="margin-bottom: 1rem">JavaScript Required</h2>
+            <p>Please enable JavaScript to use this website.</p>
+        </div>
     </div>
-  </noscript>
-  <header>
-    <h1>Welcome to DDF Shrinked URL</h1>
-  </header>
-  <main>
-    <p>Your one-stop solution to shorten URLs and track clicks.</p>
-    <div>
-      <a href="/login" class="btn">Login</a>
-      <a href="/signup" class="btn">Sign Up</a>
+
+    <div class="js-content">
+        <div class="container">
+            <header class="header">
+                <div class="logo">
+                    <h2>DDF Shortener</h2>
+                </div>
+                <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                    </svg>
+                </button>
+            </header>
+
+            <main>
+                <section class="hero">
+                    <h1>Shorten Your Links</h1>
+                    <p>Transform long, unwieldy URLs into clean, memorable, and trackable short links in seconds.</p>
+                    <div class="cta-buttons">
+                        <a href="/signup" class="button button-primary">Get Started</a>
+                        <a href="/login" class="button button-secondary">Sign In</a>
+                    </div>
+                </section>
+
+                <section class="features">
+                    <div class="feature-card">
+                        <h3>Quick & Easy</h3>
+                        <p>Create short links instantly with our user-friendly interface. No technical knowledge required.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Track Performance</h3>
+                        <p>Monitor your links' performance with detailed click analytics and insights.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Secure & Reliable</h3>
+                        <p>Your links are safe with us. We use industry-standard security measures to protect your data.</p>
+                    </div>
+                </section>
+            </main>
+        </div>
     </div>
-  </main>
-  <script>
-    if (!document.cookie.includes('js_enabled=true')) {
-      document.cookie = "js_enabled=true; path=/";
-      // Optionally, force a reload so that subsequent requests include the cookie:
-      location.reload();
-    }
-  </script>
+
+    <script src="/js/theme.js"></script>
 </body>
 </html>

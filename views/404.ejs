@@ -1,54 +1,134 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>404 - Page Not Found</title>
-  <link rel="icon" type="image/png" href="/logo.png">
-  <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-  <!-- Warn if JavaScript is disabled
-  <noscript>
-    <div style="color: red; text-align: center; padding: 1rem; background: #ffcdd2;">
-      You must enable JavaScript to be able to use the website.
-    </div>
-  </noscript>
-  <div style="text-align:center; padding: 2rem;">
-    <h1>404 - Page Not Found</h1>
-    <p>Oops! The page you're looking for doesn't exist.</p>
-    <a href="/" class="btn">Return Home</a>
-  </div>
-</body>
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>404 - Page Not Found</title>
-  <link rel="icon" type="image/png" href="/logo.png">
-  <link rel="stylesheet" href="/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <noscript>
+        <style>
+            .js-required {
+                display: flex !important;
+            }
+            .js-content {
+                display: none !important;
+            }
+        </style>
+    </noscript>
+    <style>
+        /* Include the same CSS variables as before */
+        /* ... (previous CSS variables) ... */
+
+        .error-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .error-code {
+            font-size: 8rem;
+            font-weight: 700;
+            line-height: 1;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .error-message {
+            font-size: 1.5rem;
+            color: var(--muted);
+            margin-bottom: 2rem;
+        }
+
+        .error-description {
+            max-width: 500px;
+            margin-bottom: 2rem;
+            color: var(--muted);
+        }
+
+        .home-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .home-button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--foreground);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s;
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--input);
+        }
+
+        @media (max-width: 640px) {
+            .error-code {
+                font-size: 6rem;
+            }
+
+            .error-message {
+                font-size: 1.25rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <!-- Warn if JavaScript is disabled -->
-  <noscript>
-    <div style="color: red; text-align: center; padding: 1rem; background: #ffcdd2;">
-      You must enable JavaScript to be able to use the website.
+    <div class="js-required">
+        <div>
+            <h2 style="margin-bottom: 1rem">JavaScript Required</h2>
+            <p>Please enable JavaScript to use this website.</p>
+        </div>
     </div>
-  </noscript>
-  <div style="text-align:center; padding: 2rem;">
-    <h1>404 - Page Not Found</h1>
-    <p>Oops! The page you're looking for doesn't exist.</p>
-    <a href="/" class="btn">Return Home</a>
-  </div>
-  <script>
-    if (!document.cookie.includes('js_enabled=true')) {
-      document.cookie = "js_enabled=true; path=/";
-      // Optionally, force a reload so that subsequent requests include the cookie:
-      location.reload();
-    }
-  </script>
+
+    <div class="js-content">
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+        </button>
+
+        <div class="error-container">
+            <div class="error-code">404</div>
+            <h1 class="error-message">Page Not Found</h1>
+            <p class="error-description">
+                Oops! The page you're looking for doesn't exist or has been moved.
+                Don't worry, you can find your way back to our homepage.
+            </p>
+            <a href="/" class="home-button">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                </svg>
+                Return Home
+            </a>
+        </div>
+    </div>
+
+    <script src="/js/theme.js"></script>
 </body>
 </html>

@@ -1,106 +1,278 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign Up - DDF Shrinked URL</title>
-  <link rel="icon" type="image/png" href="/logo.png">
-  <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-  <!-- Warn if JavaScript is disabled
-  <noscript>
-    <div style="color: red; text-align: center; padding: 1rem; background: #ffcdd2;">
-      You must enable JavaScript to be able to use the website.
-    </div>
-  </noscript>
-  <header>
-    <h1>Sign Up</h1>
-  </header>
-  <main>
-    <% if (error) { %>
-      <div style="color: red;"><%= error %></div>
-    <% } %>
-    <form action="/signup" method="POST">
-      <div>
-        <label for="firstName">First Name:</label>
-        <input type="text" name="firstName" id="firstName" required>
-      </div>
-      <div>
-        <label for="lastName">Last Name:</label>
-        <input type="text" name="lastName" id="lastName" required>
-      </div>
-      <div>
-        <label for="email">Email:</label>
-        <input type="email" name="email" id="email" required>
-      </div>
-      <div>
-        <label for="password">Password:</label>
-        <!-- Password must be at least 8 characters, include uppercase, lowercase, and a number
-        <input type="password" name="password" id="password" required
-               pattern="(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-               title="Password must be at least 8 characters long and include uppercase, lowercase letters and a number.">
-      </div>
-      <button type="submit">Sign Up</button>
-    </form>
-    <p>Already have an account? <a href="/login">Login here</a>.</p>
-  </main>
-</body>
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign Up - DDF Shrinked URL</title>
-  <link rel="icon" type="image/png" href="/logo.png">
-  <link rel="stylesheet" href="/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - DDF URL Shortener</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <noscript>
+        <style>
+            .js-required {
+                display: flex !important;
+            }
+            .js-content {
+                display: none !important;
+            }
+        </style>
+    </noscript>
+    <style>
+        /* Include the same CSS variables as before */
+        /* ... (previous CSS variables) ... */
+
+        .signup-container {
+            max-width: 500px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: var(--card);
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--card-foreground);
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            background-color: var(--background);
+            color: var(--foreground);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .password-strength {
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .password-strength-meter {
+            height: 4px;
+            background-color: var(--border);
+            border-radius: 2px;
+            margin-top: 0.25rem;
+        }
+
+        .password-strength-meter div {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+
+        .strength-weak { background-color: #ef4444; }
+        .strength-medium { background-color: #f59e0b; }
+        .strength-strong { background-color: #10b981; }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .submit-button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--muted);
+        }
+
+        .login-link a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 640px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-  <!-- Warn if JavaScript is disabled -->
-  <noscript>
-    <div style="color: red; text-align: center; padding: 1rem; background: #ffcdd2;">
-      You must enable JavaScript to be able to use the website.
+    <div class="js-required">
+        <div>
+            <h2 style="margin-bottom: 1rem">JavaScript Required</h2>
+            <p>Please enable JavaScript to use this website.</p>
+        </div>
     </div>
-  </noscript>
-  <header>
-    <h1>Sign Up</h1>
-  </header>
-  <main>
-    <% if (error) { %>
-      <div style="color: red;"><%= error %></div>
-    <% } %>
-    <form action="/signup" method="POST">
-      <div>
-        <label for="firstName">First Name:</label>
-        <input type="text" name="firstName" id="firstName" required>
-      </div>
-      <div>
-        <label for="lastName">Last Name:</label>
-        <input type="text" name="lastName" id="lastName" required>
-      </div>
-      <div>
-        <label for="email">Email:</label>
-        <input type="email" name="email" id="email" required>
-      </div>
-      <div>
-        <label for="password">Password:</label>
-        <!-- Password must be at least 8 characters, include uppercase, lowercase, and a number (pattern="(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}") -->
-        <input type="password" name="password" id="password" required
-               pattern="{8,}"
-               title="Password must be at least 8 characters long and include uppercase, lowercase letters and a number.">
-      </div>
-      <button type="submit">Sign Up</button>
-    </form>
-    <p>Already have an account? <a href="/login">Login here</a>.</p>
-  </main>
-  <script>
-    if (!document.cookie.includes('js_enabled=true')) {
-      document.cookie = "js_enabled=true; path=/";
-      // Optionally, force a reload so that subsequent requests include the cookie:
-      location.reload();
-    }
-  </script>
+
+    <div class="js-content">
+        <div class="container">
+            <header class="header">
+                <a href="/" class="logo">
+                    <h2>DDF Shortener</h2>
+                </a>
+                <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                    </svg>
+                </button>
+            </header>
+
+            <main>
+                <div class="signup-container">
+                    <h2 style="text-align: center; margin-bottom: 2rem; font-size: 1.5rem;">Create an Account</h2>
+                    
+                    <% if (messages.error) { %>
+                        <div class="error-message" style="margin-bottom: 1rem;">
+                            <%= messages.error %>
+                        </div>
+                    <% } %>
+
+                    <form action="/signup" method="POST" onsubmit="return validateForm()">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName" class="form-label">First Name</label>
+                                <input type="text" id="firstName" name="firstName" class="form-input" required>
+                                <div class="error-message" id="firstName-error"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="lastName" class="form-label">Last Name</label>
+                                <input type="text" id="lastName" name="lastName" class="form-input" required>
+                                <div class="error-message" id="lastName-error"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" id="email" name="email" class="form-input" required>
+                            <div class="error-message" id="email-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" id="password" name="password" class="form-input" required 
+                                   onkeyup="checkPasswordStrength()">
+                            <div class="password-strength">
+                                <span id="password-strength-text">Password strength</span>
+                                <div class="password-strength-meter">
+                                    <div id="password-strength-meter-bar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="error-message" id="password-error"></div>
+                        </div>
+
+                        <button type="submit" class="submit-button">Create Account</button>
+                    </form>
+
+                    <div class="login-link">
+                        Already have an account? <a href="/login">Sign in</a>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="/js/theme.js"></script>
+    <script>
+        function checkPasswordStrength() {
+            const password = document.getElementById('password').value;
+            const strengthMeter = document.getElementById('password-strength-meter-bar');
+            const strengthText = document.getElementById('password-strength-text');
+            
+            let strength = 0;
+            
+            if (password.length >= 8) strength += 25;
+            if (password.match(/[a-z]+/)) strength += 25;
+            if (password.match(/[A-Z]+/)) strength += 25;
+            if (password.match(/[0-9]+/)) strength += 12.5;
+            if (password.match(/[^a-zA-Z0-9]+/)) strength += 12.5;
+
+            strengthMeter.style.width = strength + '%';
+            
+            if (strength < 50) {
+                strengthMeter.className = 'strength-weak';
+                strengthText.textContent = 'Weak password';
+            } else if (strength < 75) {
+                strengthMeter.className = 'strength-medium';
+                strengthText.textContent = 'Medium password';
+            } else {
+                strengthMeter.className = 'strength-strong';
+                strengthText.textContent = 'Strong password';
+            }
+        }
+
+        function validateForm() {
+            let isValid = true;
+            const firstName = document.getElementById('firstName');
+            const lastName = document.getElementById('lastName');
+            const email = document.getElementById('email');
+            const password = document.getElementById('password');
+            
+            // Reset error messages
+            document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+
+            // Name validation
+            if (firstName.value.length < 2) {
+                document.getElementById('firstName-error').textContent = 'First name must be at least 2 characters';
+                isValid = false;
+            }
+
+            if (lastName.value.length < 2) {
+                document.getElementById('lastName-error').textContent = 'Last name must be at least 2 characters';
+                isValid = false;
+            }
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email.value)) {
+                document.getElementById('email-error').textContent = 'Please enter a valid email address';
+                isValid = false;
+            }
+
+            // Password validation
+            if (password.value.length < 8) {
+                document.getElementById('password-error').textContent = 'Password must be at least 8 characters';
+                isValid = false;
+            } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,}$/.test(password.value)) {
+                document.getElementById('password-error').textContent = 
+                    'Password must include lowercase, uppercase, number, and special character';
+                isValid = false;
+            }
+
+            return isValid;
+        }
+    </script>
 </body>
 </html>

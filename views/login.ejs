@@ -1,84 +1,182 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - DDF Shrinked URL</title>
-  <link rel="icon" type="image/png" href="/logo.png">
-  <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-  <!-- Warn if JavaScript is disabled
-  <noscript>
-    <div style="color: red; text-align: center; padding: 1rem; background: #ffcdd2;">
-      You must enable JavaScript to be able to use the website.
-    </div>
-  </noscript>
-  <header>
-    <h1>Login</h1>
-  </header>
-  <main>
-    <c% if (error) { %>
-      <div style="color: red;"><%= error %></div>
-    <!% } %>
-    <form action="/login" method="POST">
-      <div>
-        <label for="email">Email:</label>
-        <input type="email" name="email" id="email" required>
-      </div>
-      <div>
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" required>
-      </div>
-      <button type="submit">Login</button>
-    </form>
-    <p>Don't have an account? <a href="/signup">Sign up here</a>.</p>
-  </main>
-</body>
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - DDF Shrinked URL</title>
-  <link rel="icon" type="image/png" href="/logo.png">
-  <link rel="stylesheet" href="/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - DDF URL Shortener</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <noscript>
+        <style>
+            .js-required {
+                display: flex !important;
+            }
+            .js-content {
+                display: none !important;
+            }
+        </style>
+    </noscript>
+    <style>
+        /* Include the same CSS variables as landing.ejs */
+        /* ... (previous CSS variables) ... */
+
+        .login-container {
+            max-width: 400px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: var(--card);
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--card-foreground);
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            background-color: var(--background);
+            color: var(--foreground);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .submit-button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--muted);
+        }
+
+        .signup-link a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-  <!-- Warn if JavaScript is disabled -->
-  <noscript>
-    <div style="color: red; text-align: center; padding: 1rem; background: #ffcdd2;">
-      You must enable JavaScript to be able to use the website.
+    <div class="js-required">
+        <div>
+            <h2 style="margin-bottom: 1rem">JavaScript Required</h2>
+            <p>Please enable JavaScript to use this website.</p>
+        </div>
     </div>
-  </noscript>
-  <header>
-    <h1>Login</h1>
-  </header>
-  <main>
-    <% if (error) { %>
-      <div style="color: red;"><%= error %></div>
-    <% } %>
-    <form action="/login" method="POST">
-      <div>
-        <label for="email">Email:</label>
-        <input type="email" name="email" id="email" required>
-      </div>
-      <div>
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" required>
-      </div>
-      <button type="submit">Login</button>
-    </form>
-    <p>Don't have an account? <a href="/signup">Sign up here</a>.</p>
-  </main>
-  <script>
-    if (!document.cookie.includes('js_enabled=true')) {
-      document.cookie = "js_enabled=true; path=/";
-      // Optionally, force a reload so that subsequent requests include the cookie:
-      location.reload();
-    }
-  </script>
+
+    <div class="js-content">
+        <div class="container">
+            <header class="header">
+                <a href="/" class="logo">
+                    <h2>DDF Shortener</h2>
+                </a>
+                <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                    </svg>
+                </button>
+            </header>
+
+            <main>
+                <div class="login-container">
+                    <h2 style="text-align: center; margin-bottom: 2rem; font-size: 1.5rem;">Welcome Back</h2>
+                    
+                    <% if (messages.error) { %>
+                        <div class="error-message" style="margin-bottom: 1rem;">
+                            <%= messages.error %>
+                        </div>
+                    <% } %>
+
+                    <form action="/login" method="POST" onsubmit="return validateForm()">
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" id="email" name="email" class="form-input" required>
+                            <div class="error-message" id="email-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" id="password" name="password" class="form-input" required>
+                            <div class="error-message" id="password-error"></div>
+                        </div>
+
+                        <button type="submit" class="submit-button">Sign In</button>
+                    </form>
+
+                    <div class="signup-link">
+                        Don't have an account? <a href="/signup">Sign up</a>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="/js/theme.js"></script>
+    <script>
+        function validateForm() {
+            let isValid = true;
+            const email = document.getElementById('email');
+            const password = document.getElementById('password');
+            const emailError = document.getElementById('email-error');
+            const passwordError = document.getElementById('password-error');
+
+            // Reset error messages
+            emailError.textContent = '';
+            passwordError.textContent = '';
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email.value)) {
+                emailError.textContent = 'Please enter a valid email address';
+                isValid = false;
+            }
+
+            // Password validation
+            if (password.value.length < 8) {
+                passwordError.textContent = 'Password must be at least 8 characters long';
+                isValid = false;
+            }
+
+            return isValid;
+        }
+    </script>
 </body>
 </html>

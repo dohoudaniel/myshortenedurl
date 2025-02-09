@@ -1,189 +1,129 @@
-<!-- <!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Aetheris' URL Shortener</title>
-    <link rel="icon" type="image/png" href="/logo.png">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <title>Dashboard - DDF URL Shortener</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <noscript>
+        <style>
+            .js-required {
+                display: flex !important;
+            }
+            .js-content {
+                display: none !important;
+            }
+        </style>
+    </noscript>
     <style>
-        :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --success: #22c55e;
-            --background: #ffffff;
-            --foreground: #0f172a;
-            --muted: #f1f5f9;
-            --muted-foreground: #64748b;
-            --border: #e2e8f0;
+        /* Include the same CSS variables as before */
+        /* ... (previous CSS variables) ... */
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
-        [data-theme="dark"] {
-            --primary: #3b82f6;
-            --primary-dark: #2563eb;
-            --success: #22c55e;
-            --background: #0f172a;
-            --foreground: #f8fafc;
-            --muted: #1e293b;
-            --muted-foreground: #94a3b8;
-            --border: #334155;
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--background);
-            color: var(--foreground);
-            line-height: 1.5;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
-
-        .theme-toggle {
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            background: var(--muted);
-            border: 1px solid var(--border);
-            color: var(--foreground);
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .theme-toggle:hover {
-            background: var(--primary);
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
             color: white;
-        }
-
-        .hero {
-            text-align: center;
-            margin-bottom: 3rem;
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        .hero h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            background: linear-gradient(to right, var(--primary), var(--success));
-            -webkit-background-clip: text;
-            color: transparent;
-        }
-
-        .hero p {
-            color: var(--muted-foreground);
-            max-width: 600px;
-            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
         }
 
         .url-form {
-            background: var(--muted);
+            background-color: var(--card);
             padding: 2rem;
             border-radius: 1rem;
-            margin-bottom: 3rem;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
         }
 
         .form-group {
             display: flex;
             gap: 1rem;
-            max-width: 800px;
-            margin: 0 auto;
+            flex-wrap: wrap;
         }
 
-        .input-group {
+        .input-wrapper {
             flex: 1;
-            position: relative;
+            min-width: 200px;
         }
 
-        input[type="url"] {
+        .form-input {
             width: 100%;
-            padding: 1rem 1.5rem;
+            padding: 0.75rem 1rem;
             border: 1px solid var(--border);
             border-radius: 0.5rem;
-            background: var(--background);
+            background-color: var(--background);
             color: var(--foreground);
-            font-size: 1rem;
             transition: all 0.3s;
         }
 
-        input[type="url"]:focus {
+        .form-input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 2px var(--primary-dark);
-        }
-
-        .submit-btn {
-            padding: 1rem 2rem;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .submit-btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-1px);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
         .urls-table {
-            background: var(--muted);
+            background-color: var(--card);
             border-radius: 1rem;
+            border: 1px solid var(--border);
             overflow: hidden;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
         }
 
-        .table {
+        table {
             width: 100%;
             border-collapse: collapse;
         }
 
-        .table th,
-        .table td {
+        th, td {
             padding: 1rem;
             text-align: left;
             border-bottom: 1px solid var(--border);
         }
 
-        .table th {
-            background: var(--background);
+        th {
+            background-color: var(--background);
             font-weight: 600;
-            color: var(--foreground);
+            color: var(--muted);
         }
 
-        .table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .table a {
+        td a {
             color: var(--primary);
             text-decoration: none;
-            transition: color 0.3s;
         }
 
-        .table a:hover {
-            color: var(--primary-dark);
+        td a:hover {
             text-decoration: underline;
         }
 
+        .short-url {
+            font-family: monospace;
+            background-color: var(--background);
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+        }
+
         .clicks-badge {
-            background: var(--success);
+            background-color: var(--primary);
             color: white;
             padding: 0.25rem 0.75rem;
             border-radius: 1rem;
@@ -191,277 +131,196 @@
             font-weight: 500;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .button-primary {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+        }
+
+        .button-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .button-secondary {
+            background-color: transparent;
+            color: var(--foreground);
+            border: 1px solid var(--border);
+        }
+
+        .button-secondary:hover {
+            background-color: var(--background);
+            transform: translateY(-1px);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--muted);
         }
 
         @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-
-            .hero h1 {
-                font-size: 2rem;
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
             }
 
             .form-group {
                 flex-direction: column;
             }
 
-            .submit-btn {
-                width: 100%;
-            }
-
-            .table {
-                display: block;
+            .urls-table {
                 overflow-x: auto;
+            }
+
+            td a {
+                max-width: 200px;
+                overflow: hidden;
+                text-overflow: ellipsis;
                 white-space: nowrap;
+                display: block;
             }
-
-            .table th,
-            .table td {
-                padding: 0.75rem;
-            }
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 3rem 1rem;
-            color: var(--muted-foreground);
         }
     </style>
 </head>
 <body>
-    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
-        🌓
-    </button>
-
-    <div class="container">
-        <div class="hero">
-            <h1>URL Shortener</h1>
-            <p>Transform your long URLs into short, memorable links that are easy to share and track.</p>
-        </div>
-
-        <form action="/shortUrls" method="POST" class="url-form">
-            <div class="form-group">
-                <div class="input-group">
-                    <input required 
-                           placeholder="Enter your URL to shorten (e.g., https://example.com)" 
-                           type="url" 
-                           name="fullUrl" 
-                           id="fullUrl"
-                           aria-label="URL to shorten">
-                </div>
-                <button class="submit-btn" type="submit">Shorten URL</button>
-            </div>
-        </form>
-
-        <div class="urls-table">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Original URL</th>
-                        <th>Short URL</th>
-                        <th>Clicks</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% if (shortUrls && shortUrls.length > 0) { %>
-                        <% shortUrls.forEach(shortUrl => { %>
-                            <tr>
-                                <td>
-                                    <a href="<%= shortUrl.full %>" target="_blank" rel="noopener noreferrer">
-                                        <%= shortUrl.full.length > 50 ? shortUrl.full.substring(0, 50) + '...' : shortUrl.full %>
-                                    </a>
-                                </td>
-                                <td>
-                                    <a href="/<%= shortUrl.short %>" target="_blank" rel="noopener noreferrer">
-                                        /<%= shortUrl.short %>
-                                    </a>
-                                </td>
-                                <td>
-                                    <span class="clicks-badge"><%= shortUrl.clicks %></span>
-                                </td>
-                            </tr>
-                        <% }) %>
-                    <% } else { %>
-                        <tr>
-                            <td colspan="3">
-                                <div class="empty-state">
-                                    No shortened URLs yet. Create your first one above!
-                                </div>
-                            </td>
-                        </tr>
-                    <% } %>
-                </tbody>
-            </table>
+    <div class="js-required">
+        <div>
+            <h2 style="margin-bottom: 1rem">JavaScript Required</h2>
+            <p>Please enable JavaScript to use this website.</p>
         </div>
     </div>
 
+    <div class="js-content">
+        <div class="container">
+            <header class="dashboard-header">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <%= user.firstName.charAt(0) + user.lastName.charAt(0) %>
+                    </div>
+                    <div>
+                        <h2>Welcome, <%= user.firstName %></h2>
+                        <p style="color: var(--muted)"><%= user.email %></p>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                        </svg>
+                    </button>
+                    <form action="/logout" method="POST" style="display: inline;">
+                        <button type="submit" class="button button-secondary">Logout</button>
+                    </form>
+                </div>
+            </header>
+
+            <main>
+                <div class="url-form">
+                    <form action="/shortUrls" method="POST" onsubmit="return validateUrl()">
+                        <div class="form-group">
+                            <div class="input-wrapper">
+                                <input type="url" 
+                                       name="fullUrl" 
+                                       id="fullUrl" 
+                                       class="form-input"
+                                       placeholder="Enter your URL to shorten (e.g., https://example.com)"
+                                       required>
+                            </div>
+                            <button type="submit" class="button button-primary">Shorten URL</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="urls-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Original URL</th>
+                                <th>Short URL</th>
+                                <th>Clicks</th>
+                                <th>Created</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (shortUrls.length === 0) { %>
+                                <tr>
+                                    <td colspan="4">
+                                        <div class="empty-state">
+                                            <p>You haven't shortened any URLs yet.</p>
+                                            <p>Start by entering a URL above!</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <% } else { %>
+                                <% shortUrls.forEach(url => { %>
+                                    <tr>
+                                        <td>
+                                            <a href="<%= url.full %>" target="_blank" rel="noopener noreferrer">
+                                                <%= url.full %>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <span class="short-url">
+                                                https://ddfshrinkedurl/<%= url.short %>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="clicks-badge"><%= url.clicks %></span>
+                                        </td>
+                                        <td>
+                                            <%= new Date(url.createdAt).toLocaleDateString() %>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="/js/theme.js"></script>
     <script>
-        function toggleTheme() {
-            const body = document.body;
-            const currentTheme = body.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            body.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
+        function validateUrl() {
+            const urlInput = document.getElementById('fullUrl');
+            const url = urlInput.value;
+            
+            try {
+                new URL(url);
+                return true;
+            } catch (e) {
+                alert('Please enter a valid URL including http:// or https://');
+                return false;
+            }
         }
 
-        // Set initial theme
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        document.body.setAttribute('data-theme', savedTheme);
-
-        // Add loading state to form
-        document.querySelector('form').addEventListener('submit', function(e) {
-            const button = this.querySelector('button');
-            button.disabled = true;
-            button.innerHTML = 'Shortening...';
-        });
-
-        // Truncate long URLs in the table
-        document.querySelectorAll('.table a').forEach(link => {
-            if (link.innerText.length > 50) {
-                link.setAttribute('title', link.innerText);
-            }
+        // Copy URL functionality
+        document.querySelectorAll('.short-url').forEach(el => {
+            el.addEventListener('click', function() {
+                const text = this.textContent.trim();
+                navigator.clipboard.writeText(text)
+                    .then(() => {
+                        const originalText = this.textContent;
+                        this.textContent = 'Copied!';
+                        setTimeout(() => {
+                            this.textContent = originalText;
+                        }, 1500);
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy:', err);
+                    });
+            });
         });
     </script>
-</body>
-</html> -->
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home - DDF Shrinked URL</title>
-  <link rel="icon" type="image/png" href="/logo.png">
-  <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-  <!-- Warn if JavaScript is disabled
-  <noscript>
-    <div style="color: red; text-align: center; padding: 1rem; background: #ffcdd2;">
-      You must enable JavaScript to be able to use the website.
-    </div>
-  </noscript>
-  <header>
-    <h1>Your Dashboard</h1>
-    <a href="/logout" class="btn">Logout</a>
-  </header>
-  <main>
-    <section>
-      <h2>Shorten a New URL</h2>
-      <form action="/shortUrls" method="POST">
-        <label for="fullUrl">Enter URL:</label>
-        <input type="url" name="fullUrl" id="fullUrl" required placeholder="https://example.com">
-        <button type="submit">Shorten</button>
-      </form>
-    </section>
-    <section>
-      <h2>Your Shortened URLs</h2>
-      <% if (shortUrls.length > 0) { %>
-      <table border="1">
-        <thead>
-          <tr>
-            <th>Original URL</th>
-            <th>Shortened URL</th>
-            <th>Clicks</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% shortUrls.forEach(function(url){ %>
-            <tr>
-              <td><a href="<%= url.full %>" target="_blank"><%= url.full %></a></td>
-              <td>
-                <a href="/short/<%= url.short %>" target="_blank">
-                  https://ddfshrinkedurl/<%= url.short %>
-                </a>
-              </td>
-              <td><%= url.clicks %></td>
-            </tr>
-          <% }); %>
-        </tbody>
-      </table>
-      <% } else { %>
-      <p>No URLs shortened yet.</p>
-      <% } %>
-    </section>
-  </main>
-</body>
-</html> -->
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home - DDF Shrinked URL</title>
-  <link rel="icon" type="image/png" href="/logo.png">
-  <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-  <!-- Warn if JavaScript is disabled -->
-  <noscript>
-    <div style="color: red; text-align: center; padding: 1rem; background: #ffcdd2;">
-      You must enable JavaScript to be able to use the website.
-    </div>
-  </noscript>
-  <header>
-    <h1>Your Dashboard</h1>
-    <a href="/logout" class="btn">Logout</a>
-  </header>
-  <main>
-    <section>
-      <h2>Shorten a New URL</h2>
-      <form action="/shortUrls" method="POST">
-        <label for="fullUrl">Enter URL:</label>
-        <input type="url" name="fullUrl" id="fullUrl" required placeholder="https://example.com">
-        <button type="submit">Shorten</button>
-      </form>
-    </section>
-    <section>
-      <h2>Your Shortened URLs</h2>
-      <% if (shortUrls.length > 0) { %>
-      <table border="1">
-        <thead>
-          <tr>
-            <th>Original URL</th>
-            <th>Shortened URL</th>
-            <th>Clicks</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% shortUrls.forEach(function(url){ %>
-            <tr>
-              <td><a href="<%= url.full %>" target="_blank"><%= url.full %></a></td>
-              <td>
-                <a href="/short/<%= url.short %>" target="_blank">
-                  https://ddfshrinkedurl/<%= url.short %>
-                </a>
-              </td>
-              <td><%= url.clicks %></td>
-            </tr>
-          <% }); %>
-        </tbody>
-      </table>
-      <% } else { %>
-      <p>No URLs shortened yet.</p>
-      <% } %>
-    </section>
-  </main>
-  <script>
-    if (!document.cookie.includes('js_enabled=true')) {
-      document.cookie = "js_enabled=true; path=/";
-      // Optionally, force a reload so that subsequent requests include the cookie:
-      location.reload();
-    }
-  </script>
 </body>
 </html>
