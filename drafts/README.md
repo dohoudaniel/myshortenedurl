@@ -1,0 +1,1 @@
+This directory contains all my attempts usign AI and my SE skills to debug, fix and revamp this project.

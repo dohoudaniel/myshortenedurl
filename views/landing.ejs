@@ -16,10 +16,13 @@
       --muted: #64748b;
       --border: #e2e8f0;
       --card-bg: #ffffff;
-      --input-bg: #f8fafc;
       --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
       --warning-bg: #fee2e2;
       --warning-text: #dc2626;
+      
+      /* Gradients */
+      --gradient-primary: linear-gradient(135deg, #4361ee, #3f37c9);
+      --gradient-hover: linear-gradient(135deg, #3f37c9, #4361ee);
     }
 
     [data-theme="dark"] {
@@ -30,10 +33,12 @@
       --muted: #94a3b8;
       --border: #1e293b;
       --card-bg: #1e293b;
-      --input-bg: #0f172a;
       --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
       --warning-bg: #7f1d1d;
       --warning-text: #fecaca;
+      
+      --gradient-primary: linear-gradient(135deg, #60a5fa, #818cf8);
+      --gradient-hover: linear-gradient(135deg, #818cf8, #60a5fa);
     }
 
     /* Base Styles */
@@ -41,7 +46,7 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+      transition: background-color 0.3s, color 0.3s, transform 0.3s;
     }
 
     body {
@@ -52,129 +57,117 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-    }
-
-    /* Header */
-    header {
-      background-color: var(--card-bg);
-      border-bottom: 1px solid var(--border);
-      padding: 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       position: relative;
     }
 
-    h1 {
-      font-size: clamp(1.5rem, 3vw, 2rem);
-      font-weight: 600;
+    /* NoScript Warning */
+    .noscript-warning {
+      background-color: var(--warning-bg);
+      color: var(--warning-text);
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.875rem;
     }
 
     /* Main Content */
     main {
       flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
       padding: 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-      width: 100%;
+      position: relative;
+      overflow: hidden;
     }
 
-    section {
-      background-color: var(--card-bg);
-      border-radius: 1rem;
-      padding: 2rem;
-      margin-bottom: 2rem;
-      box-shadow: var(--shadow);
-      animation: fadeIn 0.5s ease-out;
+    /* Background Pattern */
+    main::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at top right, 
+                  rgba(67, 97, 238, 0.1),
+                  transparent 70%);
+      pointer-events: none;
     }
 
-    h2 {
-      font-size: 1.5rem;
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
       margin-bottom: 1.5rem;
-      color: var(--foreground);
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: fadeInDown 0.8s ease-out;
     }
 
-    /* Form Styles */
-    form {
+    main p {
+      font-size: clamp(1.1rem, 2vw, 1.3rem);
+      color: var(--muted);
+      max-width: 600px;
+      margin-bottom: 2.5rem;
+      animation: fadeInUp 0.8s ease-out 0.2s backwards;
+    }
+
+    .intro {
+      font-size: clamp(1.1rem, 2vw, 1.3rem);
+      color: var(--muted);
+      max-width: 600px;
+      margin-bottom: 2.5rem;
+      animation: fadeInUp 0.8s ease-out 0.2s backwards;
+    }
+
+    /* Button Container */
+    .button-container {
       display: flex;
       gap: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    label {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      border: 0;
-    }
-
-    input[type="url"] {
-      flex: 1;
-      padding: 0.75rem 1rem;
-      border: 2px solid var(--border);
-      border-radius: 0.5rem;
-      background-color: var(--input-bg);
-      color: var(--foreground);
-      font-size: 1rem;
-    }
-
-    input[type="url"]:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+      animation: fadeInUp 0.8s ease-out 0.4s backwards;
     }
 
     /* Button Styles */
     .btn {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      background-color: var(--primary);
-      color: white;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 0.5rem;
-      font-size: 1rem;
+      justify-content: center;
+      padding: 0.875rem 2rem;
+      border-radius: 0.75rem;
+      font-size: 1.1rem;
       font-weight: 500;
-      cursor: pointer;
       text-decoration: none;
-      transition: transform 0.2s, background-color 0.2s;
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary {
+      background: var(--gradient-primary);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--foreground);
+      border: 2px solid var(--border);
     }
 
     .btn:hover {
-      background-color: var(--secondary);
       transform: translateY(-2px);
+      box-shadow: var(--shadow);
     }
 
-    /* Table Styles */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 1rem;
-      text-align: left;
+    .btn-primary:hover {
+      background: var(--gradient-hover);
     }
 
-    th, td {
-      padding: 1rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    th {
-      font-weight: 600;
-      color: var(--muted);
-    }
-
-    td a {
+    .btn-secondary:hover {
+      border-color: var(--primary);
       color: var(--primary);
-      text-decoration: none;
-    }
-
-    td a:hover {
-      text-decoration: underline;
     }
 
     /* Theme Toggle */
@@ -188,21 +181,12 @@
       padding: 0.5rem;
       cursor: pointer;
       border-radius: 0.5rem;
-      z-index: 100;
       transition: background-color 0.2s;
+      z-index: 100;
     }
 
     .theme-toggle:hover {
       background-color: var(--border);
-    }
-
-    /* NoScript Warning */
-    .noscript-warning {
-      background-color: var(--warning-bg);
-      color: var(--warning-text);
-      text-align: center;
-      padding: 1rem;
-      font-size: 0.875rem;
     }
 
     /* Footer */
@@ -226,10 +210,21 @@
     }
 
     /* Animations */
-    @keyframes fadeIn {
+    @keyframes fadeInDown {
       from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
       }
       to {
         opacity: 1;
@@ -238,18 +233,19 @@
     }
 
     /* Responsive Design */
-    @media (max-width: 768px) {
+    @media (max-width: 640px) {
       main {
-        padding: 1rem;
+        padding: 1.5rem;
       }
 
-      form {
+      .button-container {
         flex-direction: column;
+        width: 100%;
+        max-width: 300px;
       }
 
-      table {
-        display: block;
-        overflow-x: auto;
+      .btn {
+        width: 100%;
       }
     }
 
@@ -272,59 +268,19 @@
     🌓
   </button>
 
-  <header>
-    <h1>Dashboard</h1>
-    <a href="/logout" class="btn">
-      <i class="lucide-log-out"></i>
-      Logout
-    </a>
-  </header>
-
   <main>
-    <section>
-      <h2>Shorten a New URL</h2>
-      <form action="/shortUrls" method="POST">
-        <label for="fullUrl">Enter URL:</label>
-        <input type="url" name="fullUrl" id="fullUrl" required 
-               placeholder="https://example.com">
-        <button type="submit" class="btn">
-          <i class="lucide-link"></i>
-          Shorten
-        </button>
-      </form>
-    </section>
-
-    <section>
-      <h2>Your Shortened URLs</h2>
-      <% if (shortUrls.length > 0) { %>
-        <div style="overflow-x: auto;">
-          <table>
-            <thead>
-              <tr>
-                <th>Original URL</th>
-                <th>Shortened URL</th>
-                <th>Clicks</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% shortUrls.forEach(function(url){ %>
-                <tr>
-                  <td><a href="<%= url.full %>" target="_blank"><%= url.full %></a></td>
-                  <td>
-                    <a href="/short/<%= url.short %>" target="_blank">
-                      <%= url.short %>
-                    </a>
-                  </td>
-                  <td><%= url.clicks %></td>
-                </tr>
-              <% }); %>
-            </tbody>
-          </table>
-        </div>
-      <% } else { %>
-        <p>No URLs shortened yet.</p>
-      <% } %>
-    </section>
+    <h1>Welcome to Aetheris' URL Shortener</h1>
+    <p class="intro">Your one-stop solution to shorten URLs and track clicks. Simple, fast, and reliable.</p>
+    <div class="button-container">
+      <a href="/login" class="btn btn-primary">
+        <i class="lucide-log-in"></i>
+        Login
+      </a>
+      <a href="/signup" class="btn btn-secondary">
+        <i class="lucide-user-plus"></i>
+        Sign Up
+      </a>
+    </div>
   </main>
 
   <footer>

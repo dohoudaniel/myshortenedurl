@@ -1,12 +1,5 @@
-/**
- * This file runs the project,
- * and adds a lot of user and
- * session authentication features.
- * It also handles error messages
- * and rendering of errors.
- */
-
-require('dotenv').config();
+// The backup of the server.js file that works
+// require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
@@ -18,12 +11,10 @@ const User = require('./models/user');
 const app = express();
 
 // The link to the images files
-// app.use(express.static(path.join(__dirname, "images")));
 app.use(express.static(path.join(__dirname, "images")));
-app.use("/images", express.static(path.join(__dirname, "images")));
 
-const favicon = require('serve-favicon');
-app.use(favicon(path.join(__dirname, 'images', 'logo.png')));
+// const favicon = require('serve-favicon');
+// app.use(favicon(path.join(__dirname, 'images', 'logo.png')));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, {

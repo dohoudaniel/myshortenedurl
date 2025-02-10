@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home — URL Shortener (Aetheris)</title>
+  <title>Login To Begin</title>
   <link rel="icon" type="image/png" href="/logo.png">
   <link rel="stylesheet" href="https://unpkg.com/lucide-static@0.321.0/font/lucide.css">
   <style>
@@ -17,9 +17,14 @@
       --border: #e2e8f0;
       --card-bg: #ffffff;
       --input-bg: #f8fafc;
+      --error: #ef4444;
       --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
       --warning-bg: #fee2e2;
       --warning-text: #dc2626;
+      
+      /* Gradients */
+      --gradient-primary: linear-gradient(135deg, #4361ee, #3f37c9);
+      --gradient-hover: linear-gradient(135deg, #3f37c9, #4361ee);
     }
 
     [data-theme="dark"] {
@@ -31,6 +36,7 @@
       --border: #1e293b;
       --card-bg: #1e293b;
       --input-bg: #0f172a;
+      --error: #f87171;
       --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
       --warning-bg: #7f1d1d;
       --warning-text: #fecaca;
@@ -54,127 +60,148 @@
       flex-direction: column;
     }
 
-    /* Header */
-    header {
-      background-color: var(--card-bg);
-      border-bottom: 1px solid var(--border);
-      padding: 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: relative;
-    }
-
-    h1 {
-      font-size: clamp(1.5rem, 3vw, 2rem);
-      font-weight: 600;
+    /* NoScript Warning */
+    .noscript-warning {
+      background-color: var(--warning-bg);
+      color: var(--warning-text);
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.875rem;
     }
 
     /* Main Content */
     main {
       flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       padding: 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-      width: 100%;
+      position: relative;
     }
 
-    section {
+    /* Login Form Container */
+    .form-container {
       background-color: var(--card-bg);
+      padding: 2.5rem;
       border-radius: 1rem;
-      padding: 2rem;
-      margin-bottom: 2rem;
       box-shadow: var(--shadow);
-      animation: fadeIn 0.5s ease-out;
+      width: 100%;
+      max-width: 400px;
+      animation: fadeInUp 0.5s ease-out;
     }
 
-    h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1.5rem;
-      color: var(--foreground);
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
 
     /* Form Styles */
-    form {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 1rem;
+    .form-group {
+      margin-bottom: 1.5rem;
     }
 
     label {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      border: 0;
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--foreground);
+      font-weight: 500;
     }
 
-    input[type="url"] {
-      flex: 1;
+    .input-wrapper {
+      position: relative;
+    }
+
+    input {
+      width: 100%;
       padding: 0.75rem 1rem;
       border: 2px solid var(--border);
       border-radius: 0.5rem;
       background-color: var(--input-bg);
       color: var(--foreground);
       font-size: 1rem;
+      transition: all 0.3s ease;
     }
 
-    input[type="url"]:focus {
+    input:focus {
       outline: none;
       border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
     }
 
+    /* Password Toggle */
+    .password-toggle {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 0.25rem;
+      border-radius: 0.25rem;
+      transition: all 0.3s ease;
+    }
+
+    .password-toggle:hover {
+      color: var(--primary);
+      background-color: rgba(67, 97, 238, 0.1);
+    }
+
     /* Button Styles */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background-color: var(--primary);
+    button[type="submit"] {
+      width: 100%;
+      padding: 0.875rem;
+      background: var(--gradient-primary);
       color: white;
       border: none;
-      padding: 0.75rem 1.5rem;
       border-radius: 0.5rem;
       font-size: 1rem;
       font-weight: 500;
       cursor: pointer;
-      text-decoration: none;
-      transition: transform 0.2s, background-color 0.2s;
-    }
-
-    .btn:hover {
-      background-color: var(--secondary);
-      transform: translateY(-2px);
-    }
-
-    /* Table Styles */
-    table {
-      width: 100%;
-      border-collapse: collapse;
+      transition: transform 0.2s, box-shadow 0.2s;
       margin-top: 1rem;
-      text-align: left;
     }
 
-    th, td {
-      padding: 1rem;
-      border-bottom: 1px solid var(--border);
+    button[type="submit"]:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+      background: var(--gradient-hover);
     }
 
-    th {
-      font-weight: 600;
+    /* Error Message */
+    .error-message {
+      background-color: var(--warning-bg);
+      color: var(--warning-text);
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.875rem;
+      animation: shake 0.5s ease-out;
+    }
+
+    /* Sign Up Link */
+    .signup-link {
+      text-align: center;
+      margin-top: 1.5rem;
       color: var(--muted);
     }
 
-    td a {
+    .signup-link a {
       color: var(--primary);
       text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
     }
 
-    td a:hover {
-      text-decoration: underline;
+    .signup-link a:hover {
+      color: var(--secondary);
     }
 
     /* Theme Toggle */
@@ -188,21 +215,12 @@
       padding: 0.5rem;
       cursor: pointer;
       border-radius: 0.5rem;
-      z-index: 100;
       transition: background-color 0.2s;
+      z-index: 100;
     }
 
     .theme-toggle:hover {
       background-color: var(--border);
-    }
-
-    /* NoScript Warning */
-    .noscript-warning {
-      background-color: var(--warning-bg);
-      color: var(--warning-text);
-      text-align: center;
-      padding: 1rem;
-      font-size: 0.875rem;
     }
 
     /* Footer */
@@ -212,7 +230,6 @@
       border-top: 1px solid var(--border);
       color: var(--muted);
       font-size: 0.875rem;
-      margin-top: auto;
     }
 
     footer a {
@@ -226,10 +243,10 @@
     }
 
     /* Animations */
-    @keyframes fadeIn {
+    @keyframes fadeInUp {
       from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(20px);
       }
       to {
         opacity: 1;
@@ -237,19 +254,20 @@
       }
     }
 
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
     /* Responsive Design */
-    @media (max-width: 768px) {
+    @media (max-width: 640px) {
       main {
-        padding: 1rem;
+        padding: 1.5rem;
       }
 
-      form {
-        flex-direction: column;
-      }
-
-      table {
-        display: block;
-        overflow-x: auto;
+      .form-container {
+        padding: 1.5rem;
       }
     }
 
@@ -272,59 +290,60 @@
     🌓
   </button>
 
-  <header>
-    <h1>Dashboard</h1>
-    <a href="/logout" class="btn">
-      <i class="lucide-log-out"></i>
-      Logout
-    </a>
-  </header>
-
   <main>
-    <section>
-      <h2>Shorten a New URL</h2>
-      <form action="/shortUrls" method="POST">
-        <label for="fullUrl">Enter URL:</label>
-        <input type="url" name="fullUrl" id="fullUrl" required 
-               placeholder="https://example.com">
-        <button type="submit" class="btn">
-          <i class="lucide-link"></i>
-          Shorten
-        </button>
-      </form>
-    </section>
-
-    <section>
-      <h2>Your Shortened URLs</h2>
-      <% if (shortUrls.length > 0) { %>
-        <div style="overflow-x: auto;">
-          <table>
-            <thead>
-              <tr>
-                <th>Original URL</th>
-                <th>Shortened URL</th>
-                <th>Clicks</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% shortUrls.forEach(function(url){ %>
-                <tr>
-                  <td><a href="<%= url.full %>" target="_blank"><%= url.full %></a></td>
-                  <td>
-                    <a href="/short/<%= url.short %>" target="_blank">
-                      <%= url.short %>
-                    </a>
-                  </td>
-                  <td><%= url.clicks %></td>
-                </tr>
-              <% }); %>
-            </tbody>
-          </table>
+    <div class="form-container">
+      <h1>Welcome Back</h1>
+      
+      <% if (error) { %>
+        <div class="error-message">
+          <i class="lucide-alert-circle"></i>
+          <%= error %>
         </div>
-      <% } else { %>
-        <p>No URLs shortened yet.</p>
       <% } %>
-    </section>
+
+      <form action="/login" method="POST">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <div class="input-wrapper">
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              required 
+              autocomplete="email"
+              placeholder="Enter your email"
+            >
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-wrapper">
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              required 
+              autocomplete="current-password"
+              placeholder="Enter your password"
+            >
+            <button type="button" class="password-toggle" aria-label="Toggle password visibility">
+              <i class="lucide-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit">
+          <i class="lucide-log-in"></i>
+          Login
+        </button>
+
+        <p class="signup-link">
+          Don't have an account? 
+          <a href="/signup">Sign up here</a>
+        </p>
+      </form>
+    </div>
   </main>
 
   <footer>
@@ -356,6 +375,19 @@
       
       document.documentElement.setAttribute('data-theme', newTheme);
       localStorage.setItem('theme', newTheme);
+    });
+
+    // Password Toggle
+    const passwordInput = document.getElementById('password');
+    const passwordToggle = document.querySelector('.password-toggle');
+    const passwordIcon = passwordToggle.querySelector('i');
+
+    passwordToggle.addEventListener('click', () => {
+      const type = passwordInput.type === 'password' ? 'text' : 'password';
+      passwordInput.type = type;
+      
+      // Update icon
+      passwordIcon.className = type === 'password' ? 'lucide-eye' : 'lucide-eye-off';
     });
 
     // JavaScript check

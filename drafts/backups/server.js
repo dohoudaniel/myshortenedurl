@@ -1,11 +1,3 @@
-/**
- * This file runs the project,
- * and adds a lot of user and
- * session authentication features.
- * It also handles error messages
- * and rendering of errors.
- */
-
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
@@ -14,16 +6,14 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');  // Added to parse cookies
 const path = require('path');
 const ShortUrl = require('./models/shorten');
-const User = require('./models/user');
+const User = require('./models/user'); // Ensure you have created this file (see note below)
 const app = express();
 
 // The link to the images files
-// app.use(express.static(path.join(__dirname, "images")));
 app.use(express.static(path.join(__dirname, "images")));
-app.use("/images", express.static(path.join(__dirname, "images")));
 
-const favicon = require('serve-favicon');
-app.use(favicon(path.join(__dirname, 'images', 'logo.png')));
+// const favicon = require('serve-favicon');
+// app.use(favicon(path.join(__dirname, 'images', 'logo.png')));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, {

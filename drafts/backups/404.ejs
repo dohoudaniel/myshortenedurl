@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - Page Not Found</title>
+  <link rel="icon" type="image/png" href="/logo.png">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <!-- Warn if JavaScript is disabled -->
+  <noscript>
+    <div style="color: red; text-align: center; padding: 1rem; background: #ffcdd2;">
+      You must enable JavaScript to be able to use the website.
+    </div>
+  </noscript>
+  <div style="text-align:center; padding: 2rem;">
+    <h1>404 - Page Not Found</h1>
+    <p>Oops! The page you're looking for doesn't exist.</p>
+    <a href="/" class="btn">Return Home</a>
+  </div>
+  <script>
+    if (!document.cookie.includes('js_enabled=true')) {
+      document.cookie = "js_enabled=true; path=/";
+      // Optionally, force a reload so that subsequent requests include the cookie:
+      location.reload();
+    }
+  </script>
+</body>
+</html>

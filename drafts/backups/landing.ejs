@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DDF Shrinked URL - Welcome</title>
+  <link rel="icon" type="image/png" href="/logo.png">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <!-- Warn if JavaScript is disabled -->
+  <noscript>
+    <div style="color: red; text-align: center; padding: 1rem; background: #ffcdd2;">
+      You must enable JavaScript to be able to use the website.
+    </div>
+  </noscript>
+  <header>
+    <h1>Welcome to DDF Shrinked URL</h1>
+  </header>
+  <main>
+    <p>Your one-stop solution to shorten URLs and track clicks.</p>
+    <div>
+      <a href="/login" class="btn">Login</a>
+      <a href="/signup" class="btn">Sign Up</a>
+    </div>
+  </main>
+  <script>
+    if (!document.cookie.includes('js_enabled=true')) {
+      document.cookie = "js_enabled=true; path=/";
+      // Optionally, force a reload so that subsequent requests include the cookie:
+      location.reload();
+    }
+  </script>
+</body>
+</html>

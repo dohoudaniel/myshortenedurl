@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - Page Not Found</title>
+  <link rel="icon" type="image/png" href="/logo.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/lucide-static@0.321.0/font/lucide.css">
+  <style>
+    /* CSS Variables for Theming */
+    :root {
+      --background: #ffffff;
+      --foreground: #1a1a1a;
+      --primary: #4361ee;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      --warning-bg: #fee2e2;
+      --warning-text: #dc2626;
+    }
+    [data-theme="dark"] {
+      --background: #0f172a;
+      --foreground: #f8fafc;
+      --primary: #60a5fa;
+      --muted: #94a3b8;
+      --border: #1e293b;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+      --warning-bg: #7f1d1d;
+      --warning-text: #fecaca;
+    }
+    /* Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--background);
+      color: var(--foreground);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+    }
+    /* NoScript Warning */
+    .noscript-warning {
+      background-color: var(--warning-bg);
+      color: var(--warning-text);
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.875rem;
+    }
+    /* Main Content */
+    .container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      text-align: center;
+    }
+    h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      margin-bottom: 1rem;
+      animation: fadeInDown 0.8s ease-out;
+    }
+    .paragraph {
+      color: var(--muted);
+      margin-bottom: 2rem;
+      font-size: clamp(1rem, 2vw, 1.125rem);
+      animation: fadeInUp 0.8s ease-out 0.2s backwards;
+    }
+    /* Button Styles */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: var(--primary);
+      color: white;
+      text-decoration: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      transition: transform 0.2s, box-shadow 0.2s;
+      animation: fadeInUp 0.8s ease-out 0.4s backwards;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      color: var(--foreground);
+      padding: 0.5rem;
+      cursor: pointer;
+      border-radius: 0.5rem;
+      transition: background-color 0.2s;
+    }
+    .theme-toggle:hover {
+      background-color: var(--border);
+    }
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.875rem;
+    }
+    footer a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    footer a:hover {
+      color: var(--primary);
+    }
+    /* Animations */
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    /* Media Queries */
+    @media (max-width: 640px) {
+      .container {
+        padding: 1.5rem;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <noscript>
+    <div class="noscript-warning">
+      You must enable JavaScript to be able to use the website.
+    </div>
+  </noscript>
+  
+  <button class="theme-toggle" aria-label="Toggle theme">
+    🌓
+  </button>
+  
+  <div class="container">
+    <h1>404 - Page Not Found</h1>
+    <p class="paragraph">Oops! The page you're looking for doesn't exist.</p>
+    <a href="/" class="btn">
+      <i class="lucide-home"></i>
+      Return Home
+    </a>
+  </div>
+  
+  <footer>
+    <p>
+      ©️ 2025 copyright • 
+      <a href="https://linktr.ee/dohoudanielfavour" target="_blank" rel="noopener noreferrer">Daniel Favour Dohou</a>
+      • All Rights Reserved
+    </p>
+  </footer>
+  
+  <script>
+    // Theme Toggle
+    const themeToggle = document.querySelector('.theme-toggle');
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (savedTheme) {
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    } else if (prefersDark) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    });
+    
+    // JavaScript check
+    if (!document.cookie.includes('js_enabled=true')) {
+      document.cookie = "js_enabled=true; path=/";
+      location.reload();
+    }
+  </script>
+</body>
+</html>

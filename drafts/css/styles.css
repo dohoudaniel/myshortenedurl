@@ -1,0 +1,103 @@
+/* styles.css */
+
+/* Base styling */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #ffffff;
+    color: #0f172a;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Header styling */
+  header {
+    background: #2563eb;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+  }
+  
+  /* Main container */
+  main {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1rem;
+  }
+  
+  /* Buttons */
+  .btn {
+    display: inline-block;
+    background: #2563eb;
+    color: white;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border-radius: 4px;
+    margin: 0.5rem 0;
+    transition: background 0.3s;
+  }
+  .btn:hover {
+    background: #1d4ed8;
+  }
+  
+  /* Form styling */
+  form {
+    margin: 1rem 0;
+  }
+  form div {
+    margin-bottom: 1rem;
+  }
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="url"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  button[type="submit"] {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  button[type="submit"]:hover {
+    background: #1d4ed8;
+  }
+  
+  /* Table styling for the home page */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+  table th,
+  table td {
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+    text-align: left;
+  }
+  
+  /* Noscript warning styling */
+  noscript div {
+    background: #ffcdd2;
+    color: red;
+    padding: 1rem;
+    text-align: center;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 600px) {
+    header, main {
+      padding: 0.5rem;
+    }
+    .btn {
+      width: 100%;
+      text-align: center;
+    }
+  }
+  
