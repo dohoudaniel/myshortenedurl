@@ -54,37 +54,37 @@ app.use((req, res, next) => {
 
 // Middleware to block access if JavaScript is disabled
 // Allow open paths (landing, signup, login) and static assets
-app.use((req, res, next) => {
-  const openPaths = ['/', '/signup', '/login'];
-  const isStatic = req.path.startsWith('/css/') || req.path.startsWith('/js/') || req.path.startsWith('/images/');
+// app.use((req, res, next) => {
+//   const openPaths = ['/', '/signup', '/login'];
+//   const isStatic = req.path.startsWith('/css/') || req.path.startsWith('/js/') || req.path.startsWith('/images/');
   
-  // If the request is for an open path or a static asset, skip the check
-  if (openPaths.includes(req.path) || isStatic) {
-    return next();
-  }
+//   // If the request is for an open path or a static asset, skip the check
+//   if (openPaths.includes(req.path) || isStatic) {
+//     return next();
+//   }
   
-  // If the 'js_enabled' cookie is missing, show an error page.
-  if (!req.cookies.js_enabled) {
-    return res.send(`
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <title>JavaScript Required</title>
-        <style>
-          body { font-family: Arial, sans-serif; background: #fff; color: #000; padding: 2rem; text-align: center; }
-          .error { background: #ffcdd2; color: red; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; }
-        </style>
-      </head>
-      <body>
-        <div class="error">You must enable JavaScript to use this website.</div>
-        <p>Please enable JavaScript and reload the page.</p>
-      </body>
-      </html>
-    `);
-  }
-  next();
-});
+//   // If the 'js_enabled' cookie is missing, show an error page.
+//   if (!req.cookies.js_enabled) {
+//     return res.send(`
+//       <!DOCTYPE html>
+//       <html lang="en">
+//       <head>
+//         <meta charset="UTF-8">
+//         <title>JavaScript Required</title>
+//         <style>
+//           body { font-family: Arial, sans-serif; background: #fff; color: #000; padding: 2rem; text-align: center; }
+//           .error { background: #ffcdd2; color: red; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; }
+//         </style>
+//       </head>
+//       <body>
+//         <div class="error">You must enable JavaScript to use this website.</div>
+//         <p>Please enable JavaScript and reload the page.</p>
+//       </body>
+//       </html>
+//     `);
+//   }
+//   next();
+// });
 
 // Route protection middleware for logged-in users
 function requireAuth(req, res, next) {
