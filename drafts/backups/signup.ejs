@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - DDF Shrinked URL</title>
+  <link rel="icon" type="image/png" href="/logo.png">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <!-- Warn if JavaScript is disabled -->
+  <noscript>
+    <div style="color: red; text-align: center; padding: 1rem; background: #ffcdd2;">
+      You must enable JavaScript to be able to use the website.
+    </div>
+  </noscript>
+  <header>
+    <h1>Sign Up</h1>
+  </header>
+  <main>
+    <% if (error) { %>
+      <div style="color: red;"><%= error %></div>
+    <% } %>
+    <form action="/signup" method="POST">
+      <div>
+        <label for="firstName">First Name:</label>
+        <input type="text" name="firstName" id="firstName" required>
+      </div>
+      <div>
+        <label for="lastName">Last Name:</label>
+        <input type="text" name="lastName" id="lastName" required>
+      </div>
+      <div>
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" required>
+      </div>
+      <div>
+        <label for="password">Password:</label>
+        <!-- Password must be at least 8 characters, include uppercase, lowercase, and a number (pattern="(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}") -->
+        <input type="password" name="password" id="password" required
+               pattern="{8,}"
+               title="Password must be at least 8 characters long and include uppercase, lowercase letters and a number.">
+      </div>
+      <button type="submit">Sign Up</button>
+    </form>
+    <p>Already have an account? <a href="/login">Login here</a>.</p>
+  </main>
+  <script>
+    if (!document.cookie.includes('js_enabled=true')) {
+      document.cookie = "js_enabled=true; path=/";
+      // Optionally, force a reload so that subsequent requests include the cookie:
+      location.reload();
+    }
+  </script>
+</body>
+</html>
