@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home — URL Shortener (Aetheris)</title>
+  <title>JavaScript Required</title>
   <link rel="icon" type="image/png" href="/logo.png">
-  <link rel="stylesheet" href="https://unpkg.com/lucide-static@0.321.0/font/lucide.css">
   <style>
     /* Theme Variables */
     :root {
@@ -17,8 +16,6 @@
       --border: #e2e8f0;
       --card-bg: #ffffff;
       --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-      --warning-bg: #fee2e2;
-      --warning-text: #dc2626;
       
       /* Gradients */
       --gradient-primary: linear-gradient(135deg, #4361ee, #3f37c9);
@@ -34,11 +31,6 @@
       --border: #1e293b;
       --card-bg: #1e293b;
       --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-      --warning-bg: #7f1d1d;
-      --warning-text: #fecaca;
-      
-      --gradient-primary: linear-gradient(135deg, #60a5fa, #818cf8);
-      --gradient-hover: linear-gradient(135deg, #818cf8, #60a5fa);
     }
 
     /* Base Styles */
@@ -46,7 +38,7 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      transition: background-color 0.3s, color 0.3s, transform 0.3s;
+      transition: background-color 0.3s, color 0.3s, border-color 0.3s;
     }
 
     body {
@@ -57,16 +49,6 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      position: relative;
-    }
-
-    /* NoScript Warning */
-    .noscript-warning {
-      background-color: var(--warning-bg);
-      color: var(--warning-text);
-      text-align: center;
-      padding: 1rem;
-      font-size: 0.875rem;
     }
 
     /* Main Content */
@@ -76,98 +58,66 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      text-align: center;
       padding: 2rem;
-      position: relative;
-      overflow: hidden;
+      text-align: center;
     }
 
-    /* Background Pattern */
-    main::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: radial-gradient(circle at top right, 
-                  rgba(67, 97, 238, 0.1),
-                  transparent 70%);
-      pointer-events: none;
+    .content-container {
+      background-color: var(--card-bg);
+      padding: 2.5rem;
+      border-radius: 1rem;
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 600px;
+      animation: fadeInUp 0.5s ease-out;
     }
 
     h1 {
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      font-weight: 700;
+      font-size: 2.5rem;
       margin-bottom: 1.5rem;
       background: var(--gradient-primary);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      animation: fadeInDown 0.8s ease-out;
+      display: inline-block;
     }
 
-    main p {
-      font-size: clamp(1.1rem, 2vw, 1.3rem);
+    .icon-container {
+      margin-bottom: 2rem;
+    }
+
+    .js-icon {
+      font-size: 4rem;
+      color: var(--primary);
+    }
+
+    .message {
+      font-size: 1.125rem;
+      color: var(--foreground);
+      margin-bottom: 2rem;
+    }
+
+    .help-text {
       color: var(--muted);
-      max-width: 600px;
-      margin-bottom: 2.5rem;
-      animation: fadeInUp 0.8s ease-out 0.2s backwards;
+      font-size: 0.875rem;
+      margin-bottom: 1.5rem;
     }
 
-    .intro {
-      font-size: clamp(1.1rem, 2vw, 1.3rem);
-      color: var(--muted);
-      max-width: 600px;
-      margin-bottom: 2.5rem;
-      animation: fadeInUp 0.8s ease-out 0.2s backwards;
-    }
-
-    /* Button Container */
-    .button-container {
-      display: flex;
-      gap: 1rem;
-      animation: fadeInUp 0.8s ease-out 0.4s backwards;
-    }
-
-    /* Button Styles */
-    .btn {
+    .help-link {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      padding: 0.875rem 2rem;
-      border-radius: 0.75rem;
-      font-size: 1.1rem;
-      font-weight: 500;
-      text-decoration: none;
-      transition: transform 0.2s, box-shadow 0.2s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .btn-primary {
-      background: var(--gradient-primary);
-      color: white;
-    }
-
-    .btn-secondary {
-      background: transparent;
-      color: var(--foreground);
-      border: 2px solid var(--border);
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow);
-    }
-
-    .btn-primary:hover {
-      background: var(--gradient-hover);
-    }
-
-    .btn-secondary:hover {
-      border-color: var(--primary);
+      gap: 0.5rem;
       color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .help-link:hover {
+      background-color: var(--border);
+      color: var(--secondary);
     }
 
     /* Theme Toggle */
@@ -183,6 +133,7 @@
       border-radius: 0.5rem;
       transition: background-color 0.2s;
       z-index: 100;
+      font-size: 1.25rem;
     }
 
     .theme-toggle:hover {
@@ -196,13 +147,15 @@
       border-top: 1px solid var(--border);
       color: var(--muted);
       font-size: 0.875rem;
-      margin-top: auto;
     }
 
     footer a {
       color: var(--muted);
       text-decoration: none;
       transition: color 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
     }
 
     footer a:hover {
@@ -210,17 +163,6 @@
     }
 
     /* Animations */
-    @keyframes fadeInDown {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
     @keyframes fadeInUp {
       from {
         opacity: 0;
@@ -238,14 +180,16 @@
         padding: 1.5rem;
       }
 
-      .button-container {
-        flex-direction: column;
-        width: 100%;
-        max-width: 300px;
+      .content-container {
+        padding: 1.5rem;
       }
 
-      .btn {
-        width: 100%;
+      h1 {
+        font-size: 2rem;
+      }
+
+      .message {
+        font-size: 1rem;
       }
     }
 
@@ -258,27 +202,30 @@
   </style>
 </head>
 <body>
-  <noscript>
-    <div class="noscript-warning">
-      You must enable JavaScript to be able to use the website.
-    </div>
-  </noscript>
-
   <button class="theme-toggle" aria-label="Toggle theme">
     🌓
   </button>
 
   <main>
-    <h1>Welcome to Aetheris' URL Shortener</h1>
-    <p class="intro">Your one-stop solution to shorten URLs and track clicks. Simple, fast, and reliable.</p>
-    <div class="button-container">
-      <a href="/login" class="btn btn-primary">
-        <i class="lucide-log-in"></i>
-        Login
-      </a>
-      <a href="/signup" class="btn btn-secondary">
-        <i class="lucide-user-plus"></i>
-        Sign Up
+    <div class="content-container">
+      <div class="icon-container">
+        <span class="js-icon">⚡️</span>
+      </div>
+      <h1>JavaScript Required</h1>
+      <p class="message">
+        You must enable JavaScript to use this website.<br>
+        Please enable JavaScript and refresh your browser.
+      </p>
+      <p class="help-text">
+        Need help enabling JavaScript?
+      </p>
+      <a href="https://enable-javascript.com" target="_blank" rel="noopener noreferrer" class="help-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="16" x2="12" y2="12"/>
+          <line x1="12" y1="8" x2="12.01" y2="8"/>
+        </svg>
+        Learn how to enable JavaScript
       </a>
     </div>
   </main>
@@ -286,7 +233,12 @@
   <footer>
     <p>
       ©️ 2025 copyright • 
-      <a href="https://github.com/dohoudaniel" target="_blank" rel="noopener noreferrer">Daniel Favour Dohou</a>
+      <a href="https://github.com/dohoudaniel" target="_blank" rel="noopener noreferrer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+        </svg>
+        Daniel Favour Dohou
+      </a>
       • All Rights Reserved
     </p>
   </footer>
@@ -313,12 +265,6 @@
       document.documentElement.setAttribute('data-theme', newTheme);
       localStorage.setItem('theme', newTheme);
     });
-
-    // JavaScript check
-    if (!document.cookie.includes('js_enabled=true')) {
-      document.cookie = "js_enabled=true; path=/";
-      location.reload();
-    }
   </script>
 </body>
 </html>
