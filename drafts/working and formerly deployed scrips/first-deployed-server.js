@@ -17,9 +17,11 @@ const ShortUrl = require('./models/shorten');
 const User = require('./models/user');
 const app = express();
 
-// Serve static files from /images and /public
+// The link to the images files
+// app.use(express.static(path.join(__dirname, "images")));
 app.use(express.static(path.join(__dirname, "images")));
 app.use("/images", express.static(path.join(__dirname, "images")));
+
 const favicon = require('serve-favicon');
 app.use(favicon(path.join(__dirname, 'images', 'logo.png')));
 
@@ -27,41 +29,41 @@ app.use(favicon(path.join(__dirname, 'images', 'logo.png')));
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
-})
-.then(() => console.log('MongoDB connected'))
-.catch(err => console.error('MongoDB connection error:', err));
+});
 
 // Middleware
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+// app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieParser()); // Parse cookies
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: { maxAge: 30 * 60 * 1000 } // 30 minutes
 }));
-app.use(require('express-flash')());
+
+// Set view engine
 app.set('view engine', 'ejs');
 
-// Flash message middleware to pass errors to views
+// Flash error messages via session
 app.use((req, res, next) => {
   res.locals.error = req.session.error;
   delete req.session.error;
   next();
 });
 
-/*
-  Global middleware to block access if JavaScript is disabled.
-  We allow requests for static assets (e.g., CSS, JS, images) so that the error page can be styled.
-  For every other request, if the "js_enabled" cookie is not present, we display an error page.
-*/
+// Middleware to block access if JavaScript is disabled
+// Allow open paths (landing, signup, login) and static assets
 // app.use((req, res, next) => {
-//   // Allowed paths for static assets
-//   const allowedPaths = ['/css/', '/js/', '/images/'];
-//   if (allowedPaths.some(prefix => req.path.startsWith(prefix))) {
+//   const openPaths = ['/', '/signup', '/login'];
+//   const isStatic = req.path.startsWith('/css/') || req.path.startsWith('/js/') || req.path.startsWith('/images/');
+  
+//   // If the request is for an open path or a static asset, skip the check
+//   if (openPaths.includes(req.path) || isStatic) {
 //     return next();
 //   }
-//   // If the js_enabled cookie is not set, block access.
+  
+//   // If the 'js_enabled' cookie is missing, show an error page.
 //   if (!req.cookies.js_enabled) {
 //     return res.send(`
 //       <!DOCTYPE html>
@@ -70,50 +72,19 @@ app.use((req, res, next) => {
 //         <meta charset="UTF-8">
 //         <title>JavaScript Required</title>
 //         <style>
-//           body {
-//             font-family: Arial, sans-serif;
-//             background: #fefefe;
-//             color: #333;
-//             display: flex;
-//             align-items: center;
-//             justify-content: center;
-//             height: 100vh;
-//             margin: 0;
-//             padding: 1rem;
-//             text-align: center;
-//           }
-//           .error-message {
-//             max-width: 600px;
-//           }
-//           .error-message h1 {
-//             font-size: 2rem;
-//             margin-bottom: 1rem;
-//           }
-//           .error-message p {
-//             font-size: 1.125rem;
-//           }
+//           body { font-family: Arial, sans-serif; background: #fff; color: #000; padding: 2rem; text-align: center; }
+//           .error { background: #ffcdd2; color: red; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; }
 //         </style>
 //       </head>
 //       <body>
-//         <div class="error-message">
-//           <h1>JavaScript Required</h1>
-//           <p>You must enable JavaScript to use this website.</p>
-//         </div>
+//         <div class="error">You must enable JavaScript to use this website.</div>
+//         <p>Please enable JavaScript and reload the page.</p>
 //       </body>
 //       </html>
 //     `);
 //   }
 //   next();
 // });
-
-// Middleware to redirect logged-in users away from login/signup pages
-function isNotAuthenticated(req, res, next) {
-  if (req.session.userId) {
-    // If user is logged in, redirect them to the "/" route (which further redirects if needed)
-    return res.redirect('/');
-  }
-  next();
-}
 
 // Route protection middleware for logged-in users
 function requireAuth(req, res, next) {
@@ -134,7 +105,7 @@ app.get('/', (req, res) => {
 });
 
 // Signup Routes
-app.get('/signup', isNotAuthenticated, (req, res) => {
+app.get('/signup', (req, res) => {
   res.render('signup', { error: res.locals.error });
 });
 
@@ -146,6 +117,7 @@ app.post('/signup', async (req, res) => {
     return res.redirect('/signup');
   }
   // Validate email format using a corrected regex.
+  // The hyphen is placed at the beginning of the character class to avoid range issues.
   const emailRegex = /^[-\w.]+@([-\w]+\.)+[-\w]{2,4}$/;
   if (!emailRegex.test(email)) {
     req.session.error = 'Invalid email format.';
@@ -171,7 +143,7 @@ app.post('/signup', async (req, res) => {
 });
 
 // Login Routes
-app.get('/login', isNotAuthenticated, (req, res) => {
+app.get('/login', (req, res) => {
   res.render('login', { error: res.locals.error });
 });
 
@@ -227,5 +199,4 @@ app.use((req, res) => {
 });
 
 // Start Server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log('Server running on port ' + PORT));
+app.listen(process.env.PORT || 5000, () => console.log('Server running...'));

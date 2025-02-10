@@ -1,0 +1,50 @@
+app.use((req, res, next) => {
+    // Allowed paths for static assets
+    const allowedPaths = ['/css/', '/js/', '/images/'];
+    if (allowedPaths.some(prefix => req.path.startsWith(prefix))) {
+      return next();
+    }
+    // If the js_enabled cookie is not set, block access.
+    if (!req.cookies.js_enabled) {
+      return res.send(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <title>JavaScript Required</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              background: #fefefe;
+              color: #333;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              height: 100vh;
+              margin: 0;
+              padding: 1rem;
+              text-align: center;
+            }
+            .error-message {
+              max-width: 600px;
+            }
+            .error-message h1 {
+              font-size: 2rem;
+              margin-bottom: 1rem;
+            }
+            .error-message p {
+              font-size: 1.125rem;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="error-message">
+            <h1>JavaScript Required</h1>
+            <p>You must enable JavaScript to use this website.</p>
+          </div>
+        </body>
+        </html>
+      `);
+    }
+    next();
+  });
