@@ -1,3 +1,11 @@
+/**
+ * This file runs the project,
+ * and adds a lot of user and
+ * session authentication features.
+ * It also handles error messages
+ * and rendering of errors.
+ */
+
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');

@@ -1,0 +1,1 @@
+This directory contains all the web pages being rendered for this project.
