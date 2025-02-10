@@ -17,9 +17,10 @@ const ShortUrl = require('./models/shorten');
 const User = require('./models/user');
 const app = express();
 
-// Serve static files from /images and /public
+// The link to the images files
 app.use(express.static(path.join(__dirname, "images")));
 app.use("/images", express.static(path.join(__dirname, "images")));
+
 const favicon = require('serve-favicon');
 app.use(favicon(path.join(__dirname, 'images', 'logo.png')));
 
@@ -33,7 +34,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 // Middleware
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser()); // Parse cookies
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
@@ -52,16 +53,14 @@ app.use((req, res, next) => {
 
 /*
   Global middleware to block access if JavaScript is disabled.
-  We allow requests for static assets (e.g., CSS, JS, images) so that the error page can be styled.
-  For every other request, if the "js_enabled" cookie is not present, we display an error page.
+  Allow open paths (landing, signup, login) and static assets.
 */
 // app.use((req, res, next) => {
-//   // Allowed paths for static assets
-//   const allowedPaths = ['/css/', '/js/', '/images/'];
-//   if (allowedPaths.some(prefix => req.path.startsWith(prefix))) {
+//   const openPaths = ['/', '/signup', '/login'];
+//   const isStatic = req.path.startsWith('/css/') || req.path.startsWith('/js/') || req.path.startsWith('/images/');
+//   if (openPaths.includes(req.path) || isStatic) {
 //     return next();
 //   }
-//   // If the js_enabled cookie is not set, block access.
 //   if (!req.cookies.js_enabled) {
 //     return res.send(`
 //       <!DOCTYPE html>
@@ -70,35 +69,13 @@ app.use((req, res, next) => {
 //         <meta charset="UTF-8">
 //         <title>JavaScript Required</title>
 //         <style>
-//           body {
-//             font-family: Arial, sans-serif;
-//             background: #fefefe;
-//             color: #333;
-//             display: flex;
-//             align-items: center;
-//             justify-content: center;
-//             height: 100vh;
-//             margin: 0;
-//             padding: 1rem;
-//             text-align: center;
-//           }
-//           .error-message {
-//             max-width: 600px;
-//           }
-//           .error-message h1 {
-//             font-size: 2rem;
-//             margin-bottom: 1rem;
-//           }
-//           .error-message p {
-//             font-size: 1.125rem;
-//           }
+//           body { font-family: Arial, sans-serif; background: #fefefe; color: #333; padding: 2rem; text-align: center; }
+//           .error { background: #ffcdd2; color: red; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; }
 //         </style>
 //       </head>
 //       <body>
-//         <div class="error-message">
-//           <h1>JavaScript Required</h1>
-//           <p>You must enable JavaScript to use this website.</p>
-//         </div>
+//         <div class="error">You must enable JavaScript to use this website.</div>
+//         <p>Please enable JavaScript and reload the page.</p>
 //       </body>
 //       </html>
 //     `);
@@ -106,16 +83,7 @@ app.use((req, res, next) => {
 //   next();
 // });
 
-// Middleware to redirect logged-in users away from login/signup pages
-function isNotAuthenticated(req, res, next) {
-  if (req.session.userId) {
-    // If user is logged in, redirect them to the "/" route (which further redirects if needed)
-    return res.redirect('/');
-  }
-  next();
-}
-
-// Route protection middleware for logged-in users
+// ROUTE PROTECTION MIDDLEWARE FOR LOGGED-IN USERS
 function requireAuth(req, res, next) {
   if (!req.session.userId) {
     req.session.error = 'You must be logged in to access this page.';
@@ -123,6 +91,15 @@ function requireAuth(req, res, next) {
   }
   next();
 }
+
+// ***** NEW: ISNOTAUTHENTICATED MIDDLEWARE - REDIRECT LOGGED-IN USERS AWAY FROM /SIGNUP & /LOGIN *****
+function isNotAuthenticated(req, res, next) {
+  if (req.session.userId) {
+    return res.redirect('/');
+  }
+  next();
+}
+// ***** END OF NEW MIDDLEWARE *****
 
 // Landing Page (redirect to home if already logged in)
 // This page should include a small inline script that sets the js_enabled cookie.
@@ -133,47 +110,45 @@ app.get('/', (req, res) => {
   res.render('landing');
 });
 
-// Signup Routes
+// SIGNUP PAGE
+// ***** UPDATED: APPLYING isNotAuthenticated MIDDLEWARE TO /SIGNUP GET ROUTE *****
 app.get('/signup', isNotAuthenticated, (req, res) => {
   res.render('signup', { error: res.locals.error });
 });
+// ***** END OF UPDATE *****
 
 app.post('/signup', async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
-  // Basic server-side validation
   if (!firstName || !lastName || !email || !password) {
     req.session.error = 'All fields are required.';
     return res.redirect('/signup');
   }
-  // Validate email format using a corrected regex.
   const emailRegex = /^[-\w.]+@([-\w]+\.)+[-\w]{2,4}$/;
   if (!emailRegex.test(email)) {
     req.session.error = 'Invalid email format.';
     return res.redirect('/signup');
   }
-  // Validate password length (8 characters or more)
   const passwordRegex = /^.{8,}$/;
   if (!passwordRegex.test(password)) {
     req.session.error = 'Password must be at least 8 characters long.';
     return res.redirect('/signup');
   }
-  // Check if user already exists
   const existingUser = await User.findOne({ email });
   if (existingUser) {
     req.session.error = 'Email is already registered.';
     return res.redirect('/signup');
   }
-  // Create new user
   const hashedPassword = await bcrypt.hash(password, 10);
   await User.create({ firstName, lastName, email, password: hashedPassword });
-  // Redirect to login page upon successful signup
   res.redirect('/login');
 });
 
-// Login Routes
+// LOGIN PAGE
+// ***** UPDATED: APPLYING isNotAuthenticated MIDDLEWARE TO /LOGIN GET ROUTE *****
 app.get('/login', isNotAuthenticated, (req, res) => {
   res.render('login', { error: res.locals.error });
 });
+// ***** END OF UPDATE *****
 
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
