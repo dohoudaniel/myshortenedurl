@@ -7,7 +7,6 @@
  */
 
 require("dotenv").config();
-const serverless = require('serverless-http')
 const express = require("express");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
@@ -280,6 +279,3 @@ process.on("SIGINT", () => {
     process.exit(0);
   });
 });
-
-
-module.exports = serverless(app)
