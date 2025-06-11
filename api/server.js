@@ -14,8 +14,8 @@ const bcrypt = require("bcryptjs");
 const session = require("express-session");
 const cookieParser = require("cookie-parser"); // Added to parse cookies
 const path = require("path");
-const ShortUrl = require("./models/shorten");
-const User = require("./models/user");
+const ShortUrl = require("../models/shorten");
+const User = require("../models/user");
 const app = express();
 
 // Serve static files from /images and /public
