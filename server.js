@@ -7,7 +7,6 @@
  */
 
 require("dotenv").config();
-const serverless = require('serverless-http')
 const express = require("express");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
@@ -31,10 +30,7 @@ if (!process.env.MONGODB_URI) {
 }
 
 mongoose
-  .connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGODB_URI)
   .then(() => console.log("MongoDB connected"))
   .catch((err) => {
     console.error("MongoDB connection error:", err);
@@ -245,41 +241,44 @@ app.use((req, res) => {
   res.status(404).render("404");
 });
 
-// Start Server
-const PORT = process.env.PORT || 8000;
-const server = app.listen(PORT, () => {
-  console.log("Server running on port " + PORT);
-});
-
-// Handle server errors
-server.on("error", (err) => {
-  if (err.code === "EADDRINUSE") {
-    console.error(
-      `Port ${PORT} is already in use. Please use a different port.`
-    );
-    process.exit(1);
-  } else {
-    console.error("Server error:", err);
-    process.exit(1);
-  }
-});
-
-// Graceful shutdown
-process.on("SIGTERM", () => {
-  console.log("SIGTERM received. Shutting down gracefully...");
-  server.close(() => {
-    console.log("Process terminated");
-    process.exit(0);
+// Export the Express app for both local development and serverless deployment
+if (process.env.NODE_ENV !== "production") {
+  // Start Server for local development
+  const PORT = process.env.PORT || 5000;
+  const server = app.listen(PORT, () => {
+    console.log("Server running on port " + PORT);
   });
-});
 
-process.on("SIGINT", () => {
-  console.log("SIGINT received. Shutting down gracefully...");
-  server.close(() => {
-    console.log("Process terminated");
-    process.exit(0);
+  // Handle server errors
+  server.on("error", (err) => {
+    if (err.code === "EADDRINUSE") {
+      console.error(
+        `Port ${PORT} is already in use. Please use a different port.`
+      );
+      process.exit(1);
+    } else {
+      console.error("Server error:", err);
+      process.exit(1);
+    }
   });
-});
 
+  // Graceful shutdown
+  process.on("SIGTERM", () => {
+    console.log("SIGTERM received. Shutting down gracefully...");
+    server.close(() => {
+      console.log("Process terminated");
+      process.exit(0);
+    });
+  });
 
-module.exports = serverless(app)
+  process.on("SIGINT", () => {
+    console.log("SIGINT received. Shutting down gracefully...");
+    server.close(() => {
+      console.log("Process terminated");
+      process.exit(0);
+    });
+  });
+}
+
+// Export the app for serverless deployment
+module.exports = app;
