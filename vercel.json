@@ -1,25 +1,15 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "api/server.js",
-      "use": "@vercel/node",
-      "config": {
-        "maxLambdaSize": "50mb"
-      }
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/api/server.js"
-    }
-  ],
   "functions": {
     "api/server.js": {
       "maxDuration": 30
     }
   },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/api/server"
+    }
+  ],
   "env": {
     "NODE_ENV": "production"
   }
