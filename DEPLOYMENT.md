@@ -30,6 +30,18 @@ Set these in your Vercel dashboard:
 2. **SESSION_SECRET**: A secure random string
 3. **NODE_ENV**: Set to `production`
 
+### Testing the Deployment
+
+After deployment, test these endpoints:
+
+1. **Health Check**: Visit `https://myshortenedurl.vercel.app/api/health`
+
+   - Should return: `{"status":"ok","database":"connected","timestamp":"..."}`
+   - If it returns an error, check your MongoDB connection string
+
+2. **Main App**: Visit `https://myshortenedurl.vercel.app/`
+   - Should load the landing page without timeout errors
+
 ### What Was Fixed for Vercel
 
 1. ✅ **Serverless Structure**: Created `/api/server.js` for Vercel functions
@@ -38,6 +50,10 @@ Set these in your Vercel dashboard:
 4. ✅ **Environment Handling**: Server only starts in development mode
 5. ✅ **Dependencies**: Added `serverless-http` dependency
 6. ✅ **MongoDB Warnings**: Removed deprecated connection options
+7. ✅ **Timeout Issues**: Optimized MongoDB connection for serverless
+8. ✅ **Connection Pooling**: Added efficient database connection handling
+9. ✅ **Error Handling**: Added comprehensive error handling for all routes
+10. ✅ **Health Check**: Added `/api/health` endpoint for debugging
 
 ## Fixed Issues
 

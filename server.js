@@ -23,19 +23,33 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 const favicon = require("serve-favicon");
 app.use(favicon(path.join(__dirname, "images", "logo.png")));
 
-// Connect to MongoDB
-if (!process.env.MONGODB_URI) {
-  console.error("MONGODB_URI environment variable is not set");
-  process.exit(1);
-}
+// MongoDB connection for serverless
+let isConnected = false;
 
-mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => {
-    console.error("MongoDB connection error:", err);
-    process.exit(1);
-  });
+const connectToDatabase = async () => {
+  if (isConnected) {
+    return;
+  }
+
+  if (!process.env.MONGODB_URI) {
+    throw new Error("MONGODB_URI environment variable is not set");
+  }
+
+  try {
+    await mongoose.connect(process.env.MONGODB_URI, {
+      bufferCommands: false, // Disable mongoose buffering
+      bufferMaxEntries: 0, // Disable mongoose buffering
+      maxPoolSize: 1, // Maintain up to 1 socket connection
+      serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
+      socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
+    });
+    isConnected = true;
+    console.log("MongoDB connected");
+  } catch (error) {
+    console.error("MongoDB connection error:", error);
+    throw error;
+  }
+};
 
 // Middleware
 app.use(express.urlencoded({ extended: false }));
@@ -64,6 +78,17 @@ app.use((req, res, next) => {
   delete req.session.error;
   next();
 });
+
+// Database connection middleware for routes that need it
+const ensureDbConnection = async (req, res, next) => {
+  try {
+    await connectToDatabase();
+    next();
+  } catch (error) {
+    console.error("Database connection error:", error);
+    res.status(500).send("Database connection failed");
+  }
+};
 
 /*
   Global middleware to block access if JavaScript is disabled.
@@ -139,6 +164,25 @@ function requireAuth(req, res, next) {
   next();
 }
 
+// Health check endpoint
+app.get("/api/health", async (req, res) => {
+  try {
+    await connectToDatabase();
+    res.json({
+      status: "ok",
+      database: "connected",
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      database: "disconnected",
+      error: error.message,
+      timestamp: new Date().toISOString(),
+    });
+  }
+});
+
 // Landing Page (redirect to home if already logged in)
 // This page should include a small inline script that sets the js_enabled cookie.
 app.get("/", (req, res) => {
@@ -154,35 +198,43 @@ app.get("/signup", isNotAuthenticated, (req, res) => {
 });
 
 app.post("/signup", async (req, res) => {
-  const { firstName, lastName, email, password } = req.body;
-  // Basic server-side validation
-  if (!firstName || !lastName || !email || !password) {
-    req.session.error = "All fields are required.";
-    return res.redirect("/signup");
+  try {
+    await connectToDatabase();
+
+    const { firstName, lastName, email, password } = req.body;
+    // Basic server-side validation
+    if (!firstName || !lastName || !email || !password) {
+      req.session.error = "All fields are required.";
+      return res.redirect("/signup");
+    }
+    // Validate email format using a corrected regex.
+    const emailRegex = /^[-\w.]+@([-\w]+\.)+[-\w]{2,4}$/;
+    if (!emailRegex.test(email)) {
+      req.session.error = "Invalid email format.";
+      return res.redirect("/signup");
+    }
+    // Validate password length (8 characters or more)
+    const passwordRegex = /^.{8,}$/;
+    if (!passwordRegex.test(password)) {
+      req.session.error = "Password must be at least 8 characters long.";
+      return res.redirect("/signup");
+    }
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      req.session.error = "Email is already registered.";
+      return res.redirect("/signup");
+    }
+    // Create new user
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await User.create({ firstName, lastName, email, password: hashedPassword });
+    // Redirect to login page upon successful signup
+    res.redirect("/login");
+  } catch (error) {
+    console.error("Signup error:", error);
+    req.session.error = "An error occurred during signup. Please try again.";
+    res.redirect("/signup");
   }
-  // Validate email format using a corrected regex.
-  const emailRegex = /^[-\w.]+@([-\w]+\.)+[-\w]{2,4}$/;
-  if (!emailRegex.test(email)) {
-    req.session.error = "Invalid email format.";
-    return res.redirect("/signup");
-  }
-  // Validate password length (8 characters or more)
-  const passwordRegex = /^.{8,}$/;
-  if (!passwordRegex.test(password)) {
-    req.session.error = "Password must be at least 8 characters long.";
-    return res.redirect("/signup");
-  }
-  // Check if user already exists
-  const existingUser = await User.findOne({ email });
-  if (existingUser) {
-    req.session.error = "Email is already registered.";
-    return res.redirect("/signup");
-  }
-  // Create new user
-  const hashedPassword = await bcrypt.hash(password, 10);
-  await User.create({ firstName, lastName, email, password: hashedPassword });
-  // Redirect to login page upon successful signup
-  res.redirect("/login");
 });
 
 // Login Routes
@@ -191,18 +243,26 @@ app.get("/login", isNotAuthenticated, (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
-    req.session.error = "Both email and password are required.";
-    return res.redirect("/login");
+  try {
+    await connectToDatabase();
+
+    const { email, password } = req.body;
+    if (!email || !password) {
+      req.session.error = "Both email and password are required.";
+      return res.redirect("/login");
+    }
+    const user = await User.findOne({ email });
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      req.session.error = "Invalid email or password.";
+      return res.redirect("/login");
+    }
+    req.session.userId = user._id;
+    res.redirect("/home");
+  } catch (error) {
+    console.error("Login error:", error);
+    req.session.error = "An error occurred during login. Please try again.";
+    res.redirect("/login");
   }
-  const user = await User.findOne({ email });
-  if (!user || !(await bcrypt.compare(password, user.password))) {
-    req.session.error = "Invalid email or password.";
-    return res.redirect("/login");
-  }
-  req.session.userId = user._id;
-  res.redirect("/home");
 });
 
 // Logout Route
@@ -214,26 +274,46 @@ app.get("/logout", (req, res) => {
 
 // Home Page (Protected)
 app.get("/home", requireAuth, async (req, res) => {
-  const shortUrls = await ShortUrl.find({ userId: req.session.userId });
-  res.render("index", { shortUrls });
+  try {
+    await connectToDatabase();
+    const shortUrls = await ShortUrl.find({ userId: req.session.userId });
+    res.render("index", { shortUrls });
+  } catch (error) {
+    console.error("Home page error:", error);
+    req.session.error = "An error occurred loading your URLs.";
+    res.redirect("/");
+  }
 });
 
 // URL Shortening (Protected)
 app.post("/shortUrls", requireAuth, async (req, res) => {
-  await ShortUrl.create({
-    full: req.body.fullUrl,
-    userId: req.session.userId,
-  });
-  res.redirect("/home");
+  try {
+    await connectToDatabase();
+    await ShortUrl.create({
+      full: req.body.fullUrl,
+      userId: req.session.userId,
+    });
+    res.redirect("/home");
+  } catch (error) {
+    console.error("URL shortening error:", error);
+    req.session.error = "An error occurred creating the short URL.";
+    res.redirect("/home");
+  }
 });
 
 // Redirect Shortened URL with Custom Format
 app.get("/short/:shortUrl", async (req, res) => {
-  const shortUrl = await ShortUrl.findOne({ short: req.params.shortUrl });
-  if (!shortUrl) return res.status(404).render("404");
-  shortUrl.clicks++;
-  await shortUrl.save();
-  res.redirect(shortUrl.full);
+  try {
+    await connectToDatabase();
+    const shortUrl = await ShortUrl.findOne({ short: req.params.shortUrl });
+    if (!shortUrl) return res.status(404).render("404");
+    shortUrl.clicks++;
+    await shortUrl.save();
+    res.redirect(shortUrl.full);
+  } catch (error) {
+    console.error("URL redirect error:", error);
+    res.status(404).render("404");
+  }
 });
 
 // Catch-all 404 Route
