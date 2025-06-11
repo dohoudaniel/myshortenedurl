@@ -7,6 +7,7 @@
  */
 
 require("dotenv").config();
+const serverless = require('serverless-http')
 const express = require("express");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
@@ -245,10 +246,10 @@ app.use((req, res) => {
 });
 
 // Start Server
-const PORT = process.env.PORT || 8000;
-const server = app.listen(PORT, () => {
-  console.log("Server running on port " + PORT);
-});
+// const PORT = process.env.PORT || 8000;
+// const server = app.listen(PORT, () => {
+//   console.log("Server running on port " + PORT);
+// });
 
 // Handle server errors
 server.on("error", (err) => {
@@ -279,3 +280,6 @@ process.on("SIGINT", () => {
     process.exit(0);
   });
 });
+
+
+module.exports = serverless(app)
