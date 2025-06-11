@@ -324,7 +324,7 @@ app.use((req, res) => {
 // Export the Express app for both local development and serverless deployment
 if (process.env.NODE_ENV !== "production") {
   // Start Server for local development
-  const PORT = process.env.PORT || 5000;
+  const PORT = process.env.PORT || 7000;
   const server = app.listen(PORT, () => {
     console.log("Server running on port " + PORT);
   });
