@@ -1,0 +1,9 @@
+[build]
+  # Folder for Functions
+  functions = "netlify/functions"
+
+# Redirect all routes to your function “server”
+[[redirects]]
+  from     = "/*"
+  to       = "/.netlify/functions/server"
+  status   = 200
