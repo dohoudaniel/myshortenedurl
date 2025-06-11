@@ -15,8 +15,8 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
-    "devStart": "nodemon server.js"
+    "start": "node api/server.js",
+    "devStart": "nodemon api/server.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
