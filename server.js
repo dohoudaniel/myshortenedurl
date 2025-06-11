@@ -19,7 +19,7 @@ const app = express();
 
 // Serve static files from /images and /public
 app.use(express.static(path.join(__dirname, "images")));
-app.use("/images", express.static(path.join(__dirname, "images")));
+app.use(favicon(path.join(__dirname, "images/logo.png")));
 const favicon = require("serve-favicon");
 app.use(favicon(path.join(__dirname, "images", "logo.png")));
 
